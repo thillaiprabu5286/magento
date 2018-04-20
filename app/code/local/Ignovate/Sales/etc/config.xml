@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ignovate_Sales>
+            <version>0.0.1</version>
+        </Ignovate_Sales>
+    </modules>
+    <global>
+        <helpers>
+            <ignovate_sales>
+                <class>Ignovate_Sales_Helper</class>
+            </ignovate_sales>
+        </helpers>
+        <blocks>
+            <ignovate_sales>
+                <class>Ignovate_Sales_Block</class>
+            </ignovate_sales>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_grid>Ignovate_Sales_Block_Adminhtml_Order_Grid</sales_order_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+    </global>
+</config>

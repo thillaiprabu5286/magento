@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_driver_index>
+        <reference name="content">
+            <block type="ignovate_driver/adminhtml_driver" name="ignovate_driver" />
+        </reference>
+    </adminhtml_driver_index>
+    <adminhtml_driver_edit>
+        <reference name="content">
+            <block type="ignovate_driver/adminhtml_driver_edit" name="ignovate_driver_edit" />
+        </reference>
+    </adminhtml_driver_edit>
+</layout>
