@@ -57,6 +57,13 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Grid extends Mage_Adminhtml_Block_W
                 'index' => 'aadhaar_id'
             ));
 
+        $this->addColumn('driving_license',
+            array(
+                'header'=> $helper->__('Driving License'),
+                'type' => 'text',
+                'index' => 'driving_license'
+            ));
+
         $this->addColumn('status', array(
             'header'    => $helper->__('Active'),
             'width'     => '50px',

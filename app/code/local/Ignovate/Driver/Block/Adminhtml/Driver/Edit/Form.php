@@ -58,6 +58,18 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Edit_Form extends Mage_Adminhtml_Bl
             'title'     => $helper->__('Pan No'),
         ));
 
+        $fieldset->addField('driving_license', 'text', array(
+            'name'      => 'driving_license',
+            'label'     => $helper->__('Driving License'),
+            'title'     => $helper->__('Driving License'),
+        ));
+
+        $fieldset->addField('filename', 'file', array(
+            'label'     => $helper->__('Attachment'),
+            'required'  => false,
+            'name'      => 'filename',
+        ));
+
         $fieldset->addField('status', 'select', array(
             'name'      => 'status',
             'label'     => $helper->__('Active'),

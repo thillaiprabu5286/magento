@@ -23,6 +23,33 @@ class Ignovate_Driver_Adminhtml_DriverController extends Mage_Adminhtml_Controll
 
             $data = $this->getRequest()->getParams();
 
+            if(isset($_FILES['filename']['name'])
+                && $_FILES['filename']['name'] != '')
+            {
+                /* Starting upload */
+                $uploader = new Varien_File_Uploader('filename');
+
+                // Any extention would work
+                $uploader->setAllowedExtensions(array('jpg','jpeg','gif','png', 'pdf', 'doc', 'docx'));
+                $uploader->setAllowRenameFiles(false);
+
+                $uploader->setFilesDispersion(false);
+
+                // We set media as the upload dir
+                $path = Mage::getBaseDir('media') . DS . 'driver' . DS . 'docs';
+                $uploader->save($path, $_FILES['filename']['name'] );
+
+                $fileName = str_replace(" ","_",$_FILES['filename']['name']);
+                //this way the name is saved in DB
+                $data['filename'] = $fileName;
+            } else {
+                if(isset($data['filename']['delete']) && $data['filename']['delete'] == 1) {
+                    $data['filename'] = '';
+                } else {
+                    unset($data['filename']);
+                }
+            }
+
             if ($driver->getId()) {
                 $data['updated_at'] = date ('Y-m-d H:i:s');
             } else {
