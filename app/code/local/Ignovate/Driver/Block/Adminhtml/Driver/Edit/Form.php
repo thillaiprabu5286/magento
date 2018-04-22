@@ -51,6 +51,7 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Edit_Form extends Mage_Adminhtml_Bl
             'name'      => 'aadhaar_id',
             'label'     => $helper->__('Aadhaar ID'),
             'title'     => $helper->__('Aadhaar ID'),
+            'required'  => true,
             'class' => 'validate-number validate-length maximum-length-12'
         ));
 
@@ -58,19 +59,21 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Edit_Form extends Mage_Adminhtml_Bl
             'name'      => 'pan_number',
             'label'     => $helper->__('Pan No'),
             'title'     => $helper->__('Pan No'),
+            'class'     => 'validate-alphanum'
         ));
 
         $fieldset->addField('driving_license', 'text', array(
             'name'      => 'driving_license',
             'label'     => $helper->__('Driving License'),
             'title'     => $helper->__('Driving License'),
-            'class'     => 'validate-alphanum'
+            'class'     => 'validate-alphanum',
+            'required'  => true
         ));
 
         $fieldset->addField('filename', 'file', array(
             'label'     => $helper->__('Attachment'),
             'required'  => false,
-            'name'      => 'filename',
+            'name'      => 'filename'
         ));
 
         $fieldset->addField('status', 'select', array(
