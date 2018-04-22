@@ -26,11 +26,16 @@ class Ignovate_Driver_Adminhtml_DriverController extends Mage_Adminhtml_Controll
             if(isset($_FILES['filename']['name'])
                 && $_FILES['filename']['name'] != '')
             {
+                $maxsize    = 2097152;
+                if(($_FILES['filename']['size'] >= $maxsize) || ($_FILES["filename"]["size"] == 0)) {
+                    Mage::throwException('File too large. File must be less than 2MB.');
+                }
+
                 /* Starting upload */
                 $uploader = new Varien_File_Uploader('filename');
 
                 // Any extention would work
-                $uploader->setAllowedExtensions(array('jpg','jpeg','gif','png', 'pdf', 'doc', 'docx'));
+                $uploader->setAllowedExtensions(array('jpg','jpeg', 'png', 'pdf', 'doc', 'docx'));
                 $uploader->setAllowRenameFiles(false);
 
                 $uploader->setFilesDispersion(false);

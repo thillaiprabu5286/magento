@@ -789,7 +789,7 @@ Validation.addAllThese([
                 }
                 return true;
             }],
-     ['validate-length', 'Text length does not satisfy specified text range.', function (v, elm) {
+     ['validate-length', 'Length does not satisfy specified range.', function (v, elm) {
                 var reMax = new RegExp(/^maximum-length-[0-9]+$/);
                 var reMin = new RegExp(/^minimum-length-[0-9]+$/);
                 var result = true;

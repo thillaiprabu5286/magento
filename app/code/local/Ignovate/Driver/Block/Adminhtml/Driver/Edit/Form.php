@@ -44,12 +44,14 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Edit_Form extends Mage_Adminhtml_Bl
             'label'     => $helper->__('Phone'),
             'title'     => $helper->__('Phone'),
             'required'  => true,
+            'class' => 'validate-number validate-length maximum-length-10'
         ));
 
         $fieldset->addField('aadhaar_id', 'text', array(
             'name'      => 'aadhaar_id',
             'label'     => $helper->__('Aadhaar ID'),
             'title'     => $helper->__('Aadhaar ID'),
+            'class' => 'validate-number validate-length maximum-length-12'
         ));
 
         $fieldset->addField('pan_number', 'text', array(
@@ -62,6 +64,7 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Edit_Form extends Mage_Adminhtml_Bl
             'name'      => 'driving_license',
             'label'     => $helper->__('Driving License'),
             'title'     => $helper->__('Driving License'),
+            'class'     => 'validate-alphanum'
         ));
 
         $fieldset->addField('filename', 'file', array(
