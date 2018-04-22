@@ -23,16 +23,18 @@ class Ignovate_Driver_Adminhtml_DriverController extends Mage_Adminhtml_Controll
 
             $data = $this->getRequest()->getParams();
 
-            if(isset($_FILES['filename']['name'])
-                && $_FILES['filename']['name'] != '')
+            $maxsize    = 2097152;
+
+            if(isset($_FILES['file_1']['name'])
+                && $_FILES['file_1']['name'] != '')
             {
-                $maxsize    = 2097152;
-                if(($_FILES['filename']['size'] >= $maxsize) || ($_FILES["filename"]["size"] == 0)) {
+
+                if(($_FILES['file_1']['size'] >= $maxsize) || ($_FILES["file_1"]["size"] == 0)) {
                     Mage::throwException('File too large. File must be less than 2MB.');
                 }
 
                 /* Starting upload */
-                $uploader = new Varien_File_Uploader('filename');
+                $uploader = new Varien_File_Uploader('file_1');
 
                 // Any extention would work
                 $uploader->setAllowedExtensions(array('jpg','jpeg', 'png', 'pdf', 'doc', 'docx'));
@@ -42,16 +44,80 @@ class Ignovate_Driver_Adminhtml_DriverController extends Mage_Adminhtml_Controll
 
                 // We set media as the upload dir
                 $path = Mage::getBaseDir('media') . DS . 'driver' . DS . 'docs';
-                $uploader->save($path, $_FILES['filename']['name'] );
+                $uploader->save($path, $_FILES['file_1']['name'] );
 
-                $fileName = str_replace(" ","_",$_FILES['filename']['name']);
+                $fileName = str_replace(" ","_",$_FILES['file_1']['name']);
                 //this way the name is saved in DB
-                $data['filename'] = $fileName;
+                $data['file_1'] = $fileName;
             } else {
-                if(isset($data['filename']['delete']) && $data['filename']['delete'] == 1) {
-                    $data['filename'] = '';
+                if(isset($data['file_1']['delete']) && $data['file_1']['delete'] == 1) {
+                    $data['file_1'] = '';
                 } else {
-                    unset($data['filename']);
+                    unset($data['file_1']);
+                }
+            }
+
+            if(isset($_FILES['file_2']['name'])
+                && $_FILES['file_2']['name'] != '')
+            {
+
+                if(($_FILES['file_2']['size'] >= $maxsize) || ($_FILES["file_2"]["size"] == 0)) {
+                    Mage::throwException('File too large. File must be less than 2MB.');
+                }
+
+                /* Starting upload */
+                $uploader = new Varien_File_Uploader('file_2');
+
+                // Any extention would work
+                $uploader->setAllowedExtensions(array('jpg','jpeg', 'png', 'pdf', 'doc', 'docx'));
+                $uploader->setAllowRenameFiles(false);
+
+                $uploader->setFilesDispersion(false);
+
+                // We set media as the upload dir
+                $path = Mage::getBaseDir('media') . DS . 'driver' . DS . 'docs';
+                $uploader->save($path, $_FILES['file_2']['name'] );
+
+                $fileName = str_replace(" ","_",$_FILES['file_2']['name']);
+                //this way the name is saved in DB
+                $data['file_2'] = $fileName;
+            } else {
+                if(isset($data['file_2']['delete']) && $data['file_2']['delete'] == 1) {
+                    $data['file_2'] = '';
+                } else {
+                    unset($data['file_2']);
+                }
+            }
+
+            if(isset($_FILES['file_3']['name'])
+                && $_FILES['file_3']['name'] != '')
+            {
+
+                if(($_FILES['file_3']['size'] >= $maxsize) || ($_FILES["file_3"]["size"] == 0)) {
+                    Mage::throwException('File too large. File must be less than 2MB.');
+                }
+
+                /* Starting upload */
+                $uploader = new Varien_File_Uploader('file_3');
+
+                // Any extention would work
+                $uploader->setAllowedExtensions(array('jpg','jpeg', 'png', 'pdf', 'doc', 'docx'));
+                $uploader->setAllowRenameFiles(false);
+
+                $uploader->setFilesDispersion(false);
+
+                // We set media as the upload dir
+                $path = Mage::getBaseDir('media') . DS . 'driver' . DS . 'docs';
+                $uploader->save($path, $_FILES['file_3']['name'] );
+
+                $fileName = str_replace(" ","_",$_FILES['file_3']['name']);
+                //this way the name is saved in DB
+                $data['file_3'] = $fileName;
+            } else {
+                if(isset($data['file_3']['delete']) && $data['file_3']['delete'] == 1) {
+                    $data['file_3'] = '';
+                } else {
+                    unset($data['file_3']);
                 }
             }
 
