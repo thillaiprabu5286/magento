@@ -115,17 +115,99 @@ function toggleCal(id) {
             </td>
             <td>
                 <div class="entry-edit" style="border:1px solid #ccc;">
-                    <?php echo $this->getChildHtml('diagrams') ?>
+                    <?php //echo $this->getChildHtml('diagrams') ?>
+
+                    <h2>
+                        <span style="padding: 20px;"><?php echo $this->__('Last 24h Order History') ?></span>
+                    </h2>
+
                     <?php if (is_array($this->getChild('diagrams')->getTabsIds())) : ?>
                         <div id="diagram_tab_content"></div>
                     <?php endif; ?>
                     <div style="margin:20px;">
                         <?php echo $this->getChildHtml('totals') ?>
                     </div>
+
                     <div style="margin:20px;">
-                        <?php echo $this->getChildHtml('grids') ?>
-                        <div id="grid_tab_content"></div>
+                        <div class="box" id="dashboard_diagram_totals">
+                            <div class="entry-edit">
+                                <table cellspacing="0" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td class="bold">
+                                                <span>Pending Order Count</span>
+                                            </td>
+                                            <td class="a-center bold">
+                                                <span class="nowrap" style="font-size:18px; color:#EA7601;"><span class="price"><?php echo $this->getChild('totals')->getOrderCount('pending') ?></span></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
+
+                    <div style="margin:20px;">
+                        <div class="box" id="dashboard_diagram_totals">
+                            <div class="entry-edit">
+                                <table cellspacing="0" width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="bold">
+                                            <span>Ready For Delivery Order Count</span>
+                                        </td>
+                                        <td class="a-center bold">
+                                            <span class="nowrap" style="font-size:18px; color:#EA7601;"><span class="price"><?php echo $this->getChild('totals')->getOrderCount('ready_for_delivery') ?></span></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin:20px;">
+                        <div class="box" id="dashboard_diagram_totals">
+                            <div class="entry-edit">
+                                <table cellspacing="0" width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="bold">
+                                            <span>Delivery Assigned Order Count</span>
+                                        </td>
+                                        <td class="a-center bold">
+                                            <span class="nowrap" style="font-size:18px; color:#EA7601;"><span class="price"><?php echo $this->getChild('totals')->getOrderCount('delivery_assigned') ?></span></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin:20px;">
+                        <div class="box" id="dashboard_diagram_totals">
+                            <div class="entry-edit">
+                                <table cellspacing="0" width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="bold">
+                                            <span>Delivered Order Count</span>
+                                        </td>
+                                        <td class="a-center bold">
+                                            <span class="nowrap" style="font-size:18px; color:#EA7601;"><span class="price"><?php echo $this->getChild('totals')->getOrderCount('delivered') ?></span></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div style="margin:20px;">
+                        <?php /*echo $this->getChildHtml('grids') */?>
+                        <div id="grid_tab_content"></div>
+                    </div>-->
                 </div>
             </td>
         </tr>
