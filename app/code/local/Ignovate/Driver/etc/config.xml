@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Ignovate_Driver>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
         </Ignovate_Driver>
     </modules>
     <adminhtml>

@@ -43,13 +43,6 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Grid extends Mage_Adminhtml_Block_W
                 'index' => 'phone'
             ));
 
-        $this->addColumn('pan_number',
-            array(
-                'header'=> $helper->__('PAN No'),
-                'type' => 'text',
-                'index' => 'pan_number'
-            ));
-
         $this->addColumn('aadhaar_id',
             array(
                 'header'=> $helper->__('Aadhaar ID'),
@@ -57,12 +50,46 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Grid extends Mage_Adminhtml_Block_W
                 'index' => 'aadhaar_id'
             ));
 
+        $this->addColumn('file_aadhaar', array(
+            'header'=> $helper->__('Attachment'),
+            'filter'=>false,
+            'index'=>'file_aadhaar',
+            'align' => 'left',
+            'width'     => '50px',
+            'renderer'  => 'ignovate_driver/adminhtml_driver_grid_renderer_aadhaar',
+        ));
+
+        $this->addColumn('pan_number',
+            array(
+                'header'=> $helper->__('PAN No'),
+                'type' => 'text',
+                'index' => 'pan_number'
+            ));
+
+        $this->addColumn('file_pan', array(
+            'header'=> $helper->__('Attachment'),
+            'filter'=>false,
+            'index'=>'file_pan',
+            'align' => 'left',
+            'width'     => '50px',
+            'renderer'  => 'ignovate_driver/adminhtml_driver_grid_renderer_pan',
+        ));
+
         $this->addColumn('driving_license',
             array(
                 'header'=> $helper->__('Driving License'),
                 'type' => 'text',
                 'index' => 'driving_license'
             ));
+
+        $this->addColumn('file_license', array(
+            'header'=> $helper->__('Attachment'),
+            'filter'=>false,
+            'index'=>'file_license',
+            'align' => 'left',
+            'width'     => '50px',
+            'renderer'  => 'ignovate_driver/adminhtml_driver_grid_renderer_license',
+        ));
 
         $this->addColumn('status', array(
             'header'    => $helper->__('Active'),

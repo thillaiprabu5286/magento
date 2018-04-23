@@ -25,16 +25,16 @@ class Ignovate_Driver_Adminhtml_DriverController extends Mage_Adminhtml_Controll
 
             $maxsize    = 2097152;
 
-            if(isset($_FILES['file_1']['name'])
-                && $_FILES['file_1']['name'] != '')
+            if(isset($_FILES['file_aadhaar']['name'])
+                && $_FILES['file_aadhaar']['name'] != '')
             {
 
-                if(($_FILES['file_1']['size'] >= $maxsize) || ($_FILES["file_1"]["size"] == 0)) {
+                if(($_FILES['file_aadhaar']['size'] >= $maxsize) || ($_FILES["file_aadhaar"]["size"] == 0)) {
                     Mage::throwException('File too large. File must be less than 2MB.');
                 }
 
                 /* Starting upload */
-                $uploader = new Varien_File_Uploader('file_1');
+                $uploader = new Varien_File_Uploader('file_aadhaar');
 
                 // Any extention would work
                 $uploader->setAllowedExtensions(array('jpg','jpeg', 'png', 'pdf', 'doc', 'docx'));
@@ -44,29 +44,29 @@ class Ignovate_Driver_Adminhtml_DriverController extends Mage_Adminhtml_Controll
 
                 // We set media as the upload dir
                 $path = Mage::getBaseDir('media') . DS . 'driver' . DS . 'docs';
-                $uploader->save($path, $_FILES['file_1']['name'] );
+                $uploader->save($path, $_FILES['file_aadhaar']['name'] );
 
-                $fileName = str_replace(" ","_",$_FILES['file_1']['name']);
+                $fileName = str_replace(" ","_",$_FILES['file_aadhaar']['name']);
                 //this way the name is saved in DB
-                $data['file_1'] = $fileName;
+                $data['file_aadhaar'] = $fileName;
             } else {
-                if(isset($data['file_1']['delete']) && $data['file_1']['delete'] == 1) {
-                    $data['file_1'] = '';
+                if(isset($data['file_aadhaar']['delete']) && $data['file_aadhaar']['delete'] == 1) {
+                    $data['file_aadhaar'] = '';
                 } else {
-                    unset($data['file_1']);
+                    unset($data['file_aadhaar']);
                 }
             }
 
-            if(isset($_FILES['file_2']['name'])
-                && $_FILES['file_2']['name'] != '')
+            if(isset($_FILES['file_pan']['name'])
+                && $_FILES['file_pan']['name'] != '')
             {
 
-                if(($_FILES['file_2']['size'] >= $maxsize) || ($_FILES["file_2"]["size"] == 0)) {
+                if(($_FILES['file_pan']['size'] >= $maxsize) || ($_FILES["file_pan"]["size"] == 0)) {
                     Mage::throwException('File too large. File must be less than 2MB.');
                 }
 
                 /* Starting upload */
-                $uploader = new Varien_File_Uploader('file_2');
+                $uploader = new Varien_File_Uploader('file_pan');
 
                 // Any extention would work
                 $uploader->setAllowedExtensions(array('jpg','jpeg', 'png', 'pdf', 'doc', 'docx'));
@@ -76,29 +76,29 @@ class Ignovate_Driver_Adminhtml_DriverController extends Mage_Adminhtml_Controll
 
                 // We set media as the upload dir
                 $path = Mage::getBaseDir('media') . DS . 'driver' . DS . 'docs';
-                $uploader->save($path, $_FILES['file_2']['name'] );
+                $uploader->save($path, $_FILES['file_pan']['name'] );
 
-                $fileName = str_replace(" ","_",$_FILES['file_2']['name']);
+                $fileName = str_replace(" ","_",$_FILES['file_pan']['name']);
                 //this way the name is saved in DB
-                $data['file_2'] = $fileName;
+                $data['file_pan'] = $fileName;
             } else {
-                if(isset($data['file_2']['delete']) && $data['file_2']['delete'] == 1) {
-                    $data['file_2'] = '';
+                if(isset($data['file_pan']['delete']) && $data['file_pan']['delete'] == 1) {
+                    $data['file_pan'] = '';
                 } else {
-                    unset($data['file_2']);
+                    unset($data['file_pan']);
                 }
             }
 
-            if(isset($_FILES['file_3']['name'])
-                && $_FILES['file_3']['name'] != '')
+            if(isset($_FILES['file_license']['name'])
+                && $_FILES['file_license']['name'] != '')
             {
 
-                if(($_FILES['file_3']['size'] >= $maxsize) || ($_FILES["file_3"]["size"] == 0)) {
+                if(($_FILES['file_license']['size'] >= $maxsize) || ($_FILES["file_license"]["size"] == 0)) {
                     Mage::throwException('File too large. File must be less than 2MB.');
                 }
 
                 /* Starting upload */
-                $uploader = new Varien_File_Uploader('file_3');
+                $uploader = new Varien_File_Uploader('file_license');
 
                 // Any extention would work
                 $uploader->setAllowedExtensions(array('jpg','jpeg', 'png', 'pdf', 'doc', 'docx'));
@@ -108,16 +108,16 @@ class Ignovate_Driver_Adminhtml_DriverController extends Mage_Adminhtml_Controll
 
                 // We set media as the upload dir
                 $path = Mage::getBaseDir('media') . DS . 'driver' . DS . 'docs';
-                $uploader->save($path, $_FILES['file_3']['name'] );
+                $uploader->save($path, $_FILES['file_license']['name'] );
 
-                $fileName = str_replace(" ","_",$_FILES['file_3']['name']);
+                $fileName = str_replace(" ","_",$_FILES['file_license']['name']);
                 //this way the name is saved in DB
-                $data['file_3'] = $fileName;
+                $data['file_license'] = $fileName;
             } else {
-                if(isset($data['file_3']['delete']) && $data['file_3']['delete'] == 1) {
-                    $data['file_3'] = '';
+                if(isset($data['file_license']['delete']) && $data['file_license']['delete'] == 1) {
+                    $data['file_license'] = '';
                 } else {
-                    unset($data['file_3']);
+                    unset($data['file_license']);
                 }
             }
 
