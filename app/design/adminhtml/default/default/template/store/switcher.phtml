@@ -38,7 +38,6 @@
             <?php $showGroup = false; ?>
             <?php foreach ($this->getStores($group) as $store): ?>
                 <?php
-                $debug = true;
                 //hack to restrict stores for admin users based on custom field selection
                 $userStores = Mage::getResourceModel('ignovate_adminhtml/userStore')->loadStores($userId);
                 if ($userStores) {

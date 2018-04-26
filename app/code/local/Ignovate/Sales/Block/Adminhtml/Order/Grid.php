@@ -38,6 +38,20 @@ class Ignovate_Sales_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_Wid
             array('telephone' => 'baddress.telephone')
         );
 
+        //Filter order by associated user stores
+        $userId = Mage::getSingleton('admin/session')->getUser()->getUserId();
+        $userStores = Mage::getResourceModel('ignovate_adminhtml/userStore')->loadStores($userId);
+        if ($userStores) {
+            $cusStores = array();
+            foreach ($userStores as $each) {
+                $cusStores[] = $each['store_id'];
+            }
+        $collection->getSelect()
+            ->where(
+                'store_id IN (?)', $cusStores
+            );
+         }
+
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
