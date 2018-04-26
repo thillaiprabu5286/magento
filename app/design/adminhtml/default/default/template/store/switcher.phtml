@@ -25,6 +25,7 @@
  */
 ?>
 <?php /* @var $this Mage_Core_Block_Template */ ?>
+<?php $userId = Mage::getSingleton('admin/session')->getUser()->getUserId(); ?>
 <?php if ($websites = $this->getWebsites()): ?>
 <p class="switcher"><label for="store_switcher"><?php echo $this->__('Choose Store View:') ?></label>
 <select name="store_switcher" id="store_switcher" onchange="return switchStore(this);">
@@ -36,6 +37,17 @@
         <?php foreach ($website->getGroups() as $group): ?>
             <?php $showGroup = false; ?>
             <?php foreach ($this->getStores($group) as $store): ?>
+                <?php
+                //hack to restrict stores for admin users based on custom field selection
+                $userStores = Mage::getResourceModel('ignovate_adminhtml/userStore')->loadStores($userId);
+                foreach ($userStores as $each) {
+                    $arr[] = $each['store_id'];
+                }
+                if (!in_array($store->getStoreId(), $arr)) {
+                    continue;
+                }
+                //hack to restrict stores for admin users based on custom field selection
+                ?>
                 <?php if ($showWebsite == false): ?>
                     <?php $showWebsite = true; ?>
                     <optgroup label="<?php echo $this->escapeHtml($website->getName()) ?>"></optgroup>

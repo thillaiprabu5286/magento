@@ -34,4 +34,23 @@ class Ignovate_Adminhtml_Model_Resource_UserStore extends Mage_Core_Model_Resour
     {
         $this->_init('ignovate_adminhtml/user_store', 'user_id');
     }
+
+    /**
+     * Load Admin user stores associated
+     *
+     * @param $userId
+     * @return array
+     */
+    public function loadStores($userId)
+    {
+        $adapter = $this->_getReadAdapter();
+
+        $select = $adapter->select()
+            ->from($this->getTable('ignovate_adminhtml/user_store'), array('store_id'))
+            ->where('user_id = ?', $userId);
+
+        $storeArr = $adapter->fetchAll($select);
+
+        return $storeArr;
+    }
 }
