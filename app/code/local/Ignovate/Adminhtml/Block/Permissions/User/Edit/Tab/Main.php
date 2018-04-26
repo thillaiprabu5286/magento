@@ -136,7 +136,6 @@ class Ignovate_Adminhtml_Block_Permissions_User_Edit_Tab_Main extends Mage_Admin
                 'name'      => 'stores[]',
                 'label'     => Mage::helper('adminhtml')->__('Store View'),
                 'title'     => Mage::helper('adminhtml')->__('Store View'),
-                'required'  => true,
                 'values'    => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true),
             ));
             $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');
