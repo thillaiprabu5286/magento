@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ignovate_Api2>
+            <version>0.0.1</version>
+        </Ignovate_Api2>
+    </modules>
+
+    <global>
+        <models>
+            <ignovate_api2>
+                <class>Ignovate_Api2_Model</class>
+            </ignovate_api2>
+            <api2>
+                <rewrite>
+                    <router>Ignovate_Api2_Model_Router</router>
+                    <dispatcher>Ignovate_Api2_Model_Dispatcher</dispatcher>
+                    <config>Ignovate_Api2_Model_Config</config>
+                </rewrite>
+            </api2>
+        </models>
+        <helpers>
+            <ignovate_api2>
+                <class>Ignovate_Api2_Helper</class>
+            </ignovate_api2>
+        </helpers>
+    </global>
+</config>
