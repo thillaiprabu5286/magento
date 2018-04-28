@@ -7,5 +7,4 @@
  */
 class Ignovate_Mobile_Model_Api2_Customer_Abstract extends Ignovate_Api2_Model_Resource
 {
-
 }

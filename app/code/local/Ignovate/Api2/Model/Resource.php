@@ -2,8 +2,10 @@
 
 class Ignovate_Api2_Model_Resource extends Mage_Api2_Model_Resource
 {
-    const DEFAULT_STORE     = 1;
-    const DEFAULT_LANG      = 'en';
+    const DEFAULT_CITY    = 2;
+
+    const DEFAULT_STORE = 2;
+
     const DEFAULT_CURRENCY  = 'INR';
 
     const ACTION_TYPE_VIRTUAL  = 'virtual';

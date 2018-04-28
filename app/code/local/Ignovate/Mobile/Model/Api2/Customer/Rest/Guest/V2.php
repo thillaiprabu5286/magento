@@ -3,6 +3,7 @@
 class Ignovate_Mobile_Model_Api2_Customer_Rest_Guest_V2
     extends Ignovate_Mobile_Model_Api2_Customer_Abstract
 {
+
     public function _create($request)
     {
         try {
@@ -19,8 +20,8 @@ class Ignovate_Mobile_Model_Api2_Customer_Rest_Guest_V2
 
             // Initialize empty customer model
             $customer = Mage::getModel('customer/customer')
-                ->setWebsiteId($request['city'])
-                ->setStoreId($request['area'])
+                ->setWebsiteId(self::DEFAULT_CITY)
+                ->setStoreId(self::DEFAULT_STORE)
                 ->setId(null);
             // Initialize customer group
             $customer->getGroupId();
