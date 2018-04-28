@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ignovate_Mobile>
+            <version>0.0.1</version>
+        </Ignovate_Mobile>
+    </modules>
+    <global>
+        <models>
+            <ignovate_mobile>
+                <class>Ignovate_Mobile_Model</class>
+            </ignovate_mobile>
+        </models>
+        <helpers>
+            <ignovate_mobile>
+                <class>Ignovate_Mobile_Helper</class>
+            </ignovate_mobile>
+        </helpers>
+    </global>
+</config>

@@ -26,11 +26,6 @@ class Ignovate_Api2_Model_Resource extends Mage_Api2_Model_Resource
     public function dispatch()
     {
         $debug = true;
-        // Ignore Country Resource for Admin resources
-        /*if ($this->getUserType() != 'admin') {
-            $this->_preDispatch();
-        }*/
-
         switch ($this->getActionType() . $this->getOperation()) {
             /* Create */
             case self::ACTION_TYPE_ENTITY . self::OPERATION_CREATE:
@@ -203,11 +198,6 @@ class Ignovate_Api2_Model_Resource extends Mage_Api2_Model_Resource
     protected function _postDispatch()
     {
         return $this;
-    }
-
-    public function isLive()
-    {
-        return $_SERVER['HTTP_HOST'] == 'openkart.com' || $_GET['is_live'] == 1;
     }
 
     public function validateUserGroup()
