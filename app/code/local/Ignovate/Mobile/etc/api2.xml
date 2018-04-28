@@ -19,14 +19,34 @@
                     </guest>
                 </privileges>
                 <routes>
-                    <route_collection_v2>
+                    <route_collection_store_products_v2>
                         <route>/products/store/:store</route>
                         <action_type>collection</action_type>
                         <version>2</version>
-                    </route_collection_v2>
+                    </route_collection_store_products_v2>
                 </routes>
                 <versions>1</versions>
             </get_products>
+
+            <get_category_products translate="title" module="ignovate_mobile">
+                <group>mobile_app</group>
+                <title>Get Category Products By Store</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_categoryproducts</model>
+                <privileges>
+                    <guest>
+                        <retrieve>1</retrieve>
+                    </guest>
+                </privileges>
+                <routes>
+                    <route_collection_store_category_products_v2>
+                        <route>/products/category/:category/store/:store</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_store_category_products_v2>
+                </routes>
+                <versions>1</versions>
+            </get_category_products>
         </resources>
     </api2>
 </config>

@@ -1,12 +1,14 @@
 <?php
 
-class Ignovate_Mobile_Model_Api2_Products_Rest_Guest_V2
-    extends Ignovate_Mobile_Model_Api2_Products_Abstract
+class Ignovate_Mobile_Model_Api2_Categoryproducts_Rest_Guest_V2
+    extends Ignovate_Mobile_Model_Api2_Categoryproducts_Abstract
 {
     public function _retrieveCollection()
     {
         $storeCode = $this->getRequest()->getParam('store');
         $storeId = Mage::app()->getStore($storeCode)->getId();
+
+        $categoryId = $this->getRequest()->getParam('category');
 
         $readAdapter = Mage::getSingleton('core/resource')
             ->getConnection('core_read');
@@ -26,6 +28,15 @@ class Ignovate_Mobile_Model_Api2_Products_Rest_Guest_V2
                     'special_price'     => 'product.special_price'
                 )
             );
+
+        $collectionSelect->join(
+            array('category' => 'catalog_category_product'),
+            'product.entity_id = category.product_id'
+        );
+
+        $collectionSelect->where(
+            'category.category_id = ?', $categoryId
+        );
 
         $indexData = $readAdapter->query($collectionSelect)->fetchAll();
 
