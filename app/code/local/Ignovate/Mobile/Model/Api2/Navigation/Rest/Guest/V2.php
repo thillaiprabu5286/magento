@@ -1,7 +1,7 @@
 <?php
 
-class Ignovate_Mobile_Model_Api2_Categoryproducts_Rest_Guest_V2
-    extends Ignovate_Mobile_Model_Api2_Categoryproducts_Abstract
+class Ignovate_Mobile_Model_Api2_Navigation_Rest_Guest_V2
+    extends Ignovate_Mobile_Model_Api2_Navigation_Abstract
 {
     public function _retrieveCollection()
     {

@@ -47,6 +47,26 @@
                 </routes>
                 <versions>1</versions>
             </get_category_products>
+
+            <customer translate="title" module="ignovate_mobile">
+                <group>mobile_app</group>
+                <title>Customer</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_customer</model>
+                <privileges>
+                    <guest>
+                        <create>1</create>
+                    </guest>
+                </privileges>
+                <routes>
+                    <route_collection_create_customerv2>
+                        <route>/customer</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_create_customerv2>
+                </routes>
+                <versions>1</versions>
+            </customer>
         </resources>
     </api2>
 </config>

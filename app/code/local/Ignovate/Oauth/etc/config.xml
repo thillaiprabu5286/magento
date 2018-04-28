@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ignovate_Oauth>
+            <version>0.0.1</version>
+        </Ignovate_Oauth>
+    </modules>
+
+    <global>
+        <models>
+            <oauth>
+                <rewrite>
+                    <token>Ignovate_Oauth_Model_Token</token>
+                </rewrite>
+            </oauth>
+        </models>
+    </global>
+</config>
