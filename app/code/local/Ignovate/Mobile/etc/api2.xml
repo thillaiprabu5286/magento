@@ -31,7 +31,7 @@
                 <group>mobile_app</group>
                 <title>Get Category Products By Store</title>
                 <sort_order>1</sort_order>
-                <model>ignovate_mobile/api2_categoryproducts</model>
+                <model>ignovate_mobile/api2_navigation</model>
                 <privileges>
                     <guest>
                         <retrieve>1</retrieve>
