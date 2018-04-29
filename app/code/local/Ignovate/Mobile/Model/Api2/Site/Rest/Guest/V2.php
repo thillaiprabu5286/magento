@@ -18,8 +18,9 @@ class Ignovate_Mobile_Model_Api2_Site_Rest_Guest_V2
 
                 //Build Website Params
                 $countries[] = array (
-                    'cityName' => $website->getName(),
-                    'city_code' => $website->getCode(),
+                    'id' => $website->getId(),
+                    'name' => $website->getName(),
+                    'code' => $website->getCode(),
                     'active' => $this->_checkSingleStoreActive($website->getGroups())
                 );
 
@@ -35,6 +36,32 @@ class Ignovate_Mobile_Model_Api2_Site_Rest_Guest_V2
                 Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
             );
         }
+    }
+
+    public function _retrieve()
+    {
+        $cityId = $this->getRequest()->getParam('id');
+        if (empty($cityId)) {
+            $this->_critical(self::RESOURCE_DATA_INVALID);
+        }
+
+        //Get Stores by Website
+        $response = array();
+        $website = Mage::getModel('core/website')->load($cityId);
+        foreach ($website->getGroups() as $group) {
+            $stores = $group->getStores();
+            $areas = array();
+            foreach ($stores as $store) {
+                $areas[] = array (
+                    'id' => $store->getStoreId(),
+                    'name' => $store->getName(),
+                    'code' => $store->getCode(),
+                    'active' => $store->getIsActive()
+                );
+            }
+            $response['data'] = $areas;
+        }
+        return $response;
     }
 
     protected function _checkSingleStoreActive($info)

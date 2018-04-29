@@ -27,7 +27,6 @@
                 </routes>
                 <versions>1</versions>
             </get_products>
-
             <get_category_products translate="title" module="ignovate_mobile">
                 <group>mobile_app</group>
                 <title>Get Category Products By Store</title>
@@ -47,7 +46,6 @@
                 </routes>
                 <versions>1</versions>
             </get_category_products>
-
             <customer translate="title" module="ignovate_mobile">
                 <group>mobile_app</group>
                 <title>Customer</title>
@@ -67,7 +65,6 @@
                 </routes>
                 <versions>1</versions>
             </customer>
-
             <detect_site_info translate="title" module="ignovate_mobile">
                 <group>mobile_app</group>
                 <title>Site Info</title>
@@ -84,10 +81,14 @@
                         <action_type>collection</action_type>
                         <version>2</version>
                     </route_collection_city_v2>
+                    <route_entity_city_area_v2>
+                        <route>/city/:id/areas</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_city_area_v2>
                 </routes>
                 <versions>1</versions>
             </detect_site_info>
-
         </resources>
     </api2>
 </config>

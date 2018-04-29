@@ -63,7 +63,7 @@ class Ignovate_Api2_Model_Resource extends Mage_Api2_Model_Resource
             case self::ACTION_TYPE_ENTITY . self::OPERATION_RETRIEVE:
                 $this->_errorIfMethodNotExist('_retrieve');
                 $retrievedData = $this->_retrieve();
-                $this->_render($this->getResponse()->getMessages());
+                $this->_render($retrievedData);
                 break;
             case self::ACTION_TYPE_COLLECTION . self::OPERATION_RETRIEVE:
                 $this->_errorIfMethodNotExist('_retrieveCollection');
