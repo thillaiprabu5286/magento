@@ -67,6 +67,27 @@
                 </routes>
                 <versions>1</versions>
             </customer>
+
+            <detect_site_info translate="title" module="ignovate_mobile">
+                <group>mobile_app</group>
+                <title>Site Info</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_site</model>
+                <privileges>
+                    <guest>
+                        <retrieve>1</retrieve>
+                    </guest>
+                </privileges>
+                <routes>
+                    <route_collection_city_v2>
+                        <route>/city</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_city_v2>
+                </routes>
+                <versions>1</versions>
+            </detect_site_info>
+
         </resources>
     </api2>
 </config>
