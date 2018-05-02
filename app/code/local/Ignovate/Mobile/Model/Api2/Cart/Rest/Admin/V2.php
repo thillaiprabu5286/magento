@@ -5,6 +5,34 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
 {
     public function _create($request)
     {
+        // Validate if consumer key is set in request and if it exists
+        $consumer = Mage::getModel('oauth/consumer');
+        if (empty($request['api_key'])) {
+            Mage::throwException('Consumer key is not specified');
+        }
+        $consumer->load($request['api_key'], 'key');
+        if (!$consumer->getId()) {
+            Mage::throwException('Consumer key is incorrect');
+        }
+
+        if (empty($request['customer_id'])) {
+            Mage::throwException('Customer Id is not specified');
+        }
+
+        if (empty($request['store_id'])) {
+            Mage::throwException('Store id not specified');
+        }
+
+        //Load Customer by id
+        $customer = Mage::getModel('customer/customer')->load($request['customer_id']);
+        if(!is_object($customer) || !$customer->getId()){
+            Mage::throwException('Invalid Customer id specified');
+        }
+
+        if (empty($request['product'])) {
+            Mage::throwException('No item specified');
+        }
+
         try {
             /** @var Mage_Checkout_Model_Cart $cart */
             $cart = Mage::getSingleton('checkout/cart');
@@ -19,10 +47,6 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
             $cart1->setCartWasUpdated(true);
             $result_array["quoteid"] = $quoteid=$cart1->getQuoteId();
             $result_array["items_count"]  =Mage::helper('checkout/cart')->getCart()->getItemsCount();
-
-            //Get Customer details
-            /** @var Mage_Customer_Model_Customer $customer */
-            $customer = Mage::getModel('customer/customer')->load($request['customer_id']);
 
             //get quote using sales/quote
             $quote = Mage::getModel('sales/quote')->load($quoteid);
