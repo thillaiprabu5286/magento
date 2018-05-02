@@ -108,6 +108,25 @@
                 </routes>
                 <versions>1</versions>
             </cart_api2>
+            <order_api2>
+                <group>mobile_app</group>
+                <title>Order</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_order</model>
+                <privileges>
+                    <admin>
+                        <create>1</create>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_collection_order_v2>
+                        <route>/processorder</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_order_v2>
+                </routes>
+                <versions>1</versions>
+            </order_api2>
         </resources>
     </api2>
 </config>

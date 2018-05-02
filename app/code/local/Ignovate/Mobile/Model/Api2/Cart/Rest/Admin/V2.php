@@ -38,8 +38,11 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
             $cart = Mage::getSingleton('checkout/cart');
             foreach ($request['product'] as $productId => $qty)
             {
-                Mage::getSingleton("core/session", array("name" => "frontend"));
-                $cart->addProduct($productId, array('qty' => $qty));
+                //Mage::getSingleton("core/session", array("name" => "frontend"));
+                $product = Mage::getModel('catalog/product')
+                    ->setStoreId($request['store_id'])
+                    ->load($productId);
+                $cart->addProduct($product, array('qty' => $qty));
             }
             $cart->save();
 
@@ -70,11 +73,13 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
             $base_grand_total=$quote->getBaseGrandTotal();
             $grand_total=Mage::helper('directory')->currencyConvert($base_grand_total, $base_currency_code , $currency_code);
             $base_subtotal=$quote->getBaseSubtotal();
-            $subtotal=Mage::helper('directory')->currencyConvert($base_subtotal, $base_currency_code , $currency_code);
-            $base_subtotal_with_discount=$quote->getBaseSubtotalWithDiscount();
+            $subtotal = Mage::helper('directory')->currencyConvert($base_subtotal, $base_currency_code , $currency_code);
+            $base_subtotal_with_discount = $quote->getBaseSubtotalWithDiscount();
             $subtotal_with_discount=Mage::helper('directory')->currencyConvert($base_subtotal_with_discount, $base_currency_code , $currency_code);
 
-            $quote->setGrandTotal($grand_total)->setSubtotal($subtotal)->setSubtotalWithDiscount($subtotal_with_discount);
+            $quote->setGrandTotal($grand_total)
+                ->setSubtotal($subtotal)
+                ->setSubtotalWithDiscount($subtotal_with_discount);
             $quote->save();
 
             $response = $this->_buildQuote($quote, $customer);
@@ -87,7 +92,6 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
                 Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
             );
         }
-
     }
 }
 
