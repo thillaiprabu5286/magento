@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ignovate_Checkout>
+            <version>0.0.1</version>
+        </Ignovate_Checkout>
+    </modules>
+    <global>
+        <models>
+            <ignovate_checkout>
+                <class>Ignovate_Checkout_Model</class>
+            </ignovate_checkout>
+            <checkout>
+                <rewrite>
+                    <cart>Ignovate_Checkout_Model_Cart</cart>
+                </rewrite>
+            </checkout>
+        </models>
+    </global>
+</config>

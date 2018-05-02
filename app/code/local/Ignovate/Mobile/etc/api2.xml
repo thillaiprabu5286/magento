@@ -8,9 +8,9 @@
             </mobile_app>
         </resource_groups>
         <resources>
-            <get_products translate="title" module="ignovate_mobile">
+            <products_api2 translate="title" module="ignovate_mobile">
                 <group>mobile_app</group>
-                <title>Get Products By Store</title>
+                <title>Store Products</title>
                 <sort_order>1</sort_order>
                 <model>ignovate_mobile/api2_products</model>
                 <privileges>
@@ -26,10 +26,10 @@
                     </route_collection_store_products_v2>
                 </routes>
                 <versions>1</versions>
-            </get_products>
-            <get_category_products translate="title" module="ignovate_mobile">
+            </products_api2>
+            <navigation_api2 translate="title" module="ignovate_mobile">
                 <group>mobile_app</group>
-                <title>Get Category Products By Store</title>
+                <title>Navigation Products</title>
                 <sort_order>1</sort_order>
                 <model>ignovate_mobile/api2_navigation</model>
                 <privileges>
@@ -45,8 +45,8 @@
                     </route_collection_store_category_products_v2>
                 </routes>
                 <versions>1</versions>
-            </get_category_products>
-            <customer translate="title" module="ignovate_mobile">
+            </navigation_api2>
+            <customer_api2 translate="title" module="ignovate_mobile">
                 <group>mobile_app</group>
                 <title>Customer</title>
                 <sort_order>1</sort_order>
@@ -64,8 +64,8 @@
                     </route_collection_create_customerv2>
                 </routes>
                 <versions>1</versions>
-            </customer>
-            <detect_site_info translate="title" module="ignovate_mobile">
+            </customer_api2>
+            <store_api2 translate="title" module="ignovate_mobile">
                 <group>mobile_app</group>
                 <title>Site Info</title>
                 <sort_order>1</sort_order>
@@ -88,7 +88,26 @@
                     </route_entity_city_area_v2>
                 </routes>
                 <versions>1</versions>
-            </detect_site_info>
+            </store_api2>
+            <cart_api2>
+                <group>mobile_app</group>
+                <title>Cart</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_cart</model>
+                <privileges>
+                    <admin>
+                        <create>1</create>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_collection_cart_v2>
+                        <route>/addcart</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_cart_v2>
+                </routes>
+                <versions>1</versions>
+            </cart_api2>
         </resources>
     </api2>
 </config>

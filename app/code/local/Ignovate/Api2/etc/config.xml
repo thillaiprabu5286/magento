@@ -5,7 +5,6 @@
             <version>0.0.1</version>
         </Ignovate_Api2>
     </modules>
-
     <global>
         <models>
             <ignovate_api2>
@@ -16,6 +15,8 @@
                     <router>Ignovate_Api2_Model_Router</router>
                     <dispatcher>Ignovate_Api2_Model_Dispatcher</dispatcher>
                     <config>Ignovate_Api2_Model_Config</config>
+                    <server>Ignovate_Api2_Model_Server</server>
+                    <auth>Ignovate_Api2_Model_Auth</auth>
                 </rewrite>
             </api2>
         </models>
@@ -24,5 +25,15 @@
                 <class>Ignovate_Api2_Helper</class>
             </ignovate_api2>
         </helpers>
+        <api2>
+            <auth_adapters>
+                <key module="api2" translate="label">
+                    <model>ignovate_api2/auth_adapter_key</model>
+                    <label>key</label>
+                    <enabled>1</enabled>
+                    <order>9</order>
+                </key>
+            </auth_adapters>
+        </api2>
     </global>
 </config>

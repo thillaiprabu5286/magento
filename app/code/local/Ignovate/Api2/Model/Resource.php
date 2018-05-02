@@ -27,6 +27,7 @@ class Ignovate_Api2_Model_Resource extends Mage_Api2_Model_Resource
      */
     public function dispatch()
     {
+        $debug = true;
         switch ($this->getActionType() . $this->getOperation()) {
             /* Create */
             case self::ACTION_TYPE_ENTITY . self::OPERATION_CREATE:

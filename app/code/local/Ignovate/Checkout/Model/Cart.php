@@ -31,7 +31,7 @@
  * @package     Mage_Checkout
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_Checkout_Model_Cart extends Varien_Object implements Mage_Checkout_Model_Cart_Interface
+class Ignovate_Checkout_Model_Cart extends Varien_Object implements Mage_Checkout_Model_Cart_Interface
 {
     /**
      * Shopping cart items summary quantity(s)
@@ -203,10 +203,11 @@ class Mage_Checkout_Model_Cart extends Varien_Object implements Mage_Checkout_Mo
                 ->load($productInfo);
         }
         $currentWebsiteId = Mage::app()->getStore()->getWebsiteId();
+        $productId = $product->getId();
         if (!$product
             || !$product->getId()
             || !is_array($product->getWebsiteIds())
-            //|| !in_array($currentWebsiteId, $product->getWebsiteIds())
+            || !in_array($currentWebsiteId, $product->getWebsiteIds())
         ) {
             Mage::throwException(Mage::helper('checkout')->__('The product could not be found.'));
         }
@@ -493,9 +494,9 @@ class Mage_Checkout_Model_Cart extends Varien_Object implements Mage_Checkout_Mo
         if (null === $this->_productIds) {
             $this->_productIds = array();
             if ($this->getSummaryQty()>0) {
-               foreach ($this->getQuote()->getAllItems() as $item) {
-                   $this->_productIds[] = $item->getProductId();
-               }
+                foreach ($this->getQuote()->getAllItems() as $item) {
+                    $this->_productIds[] = $item->getProductId();
+                }
             }
             $this->_productIds = array_unique($this->_productIds);
         }
