@@ -7,7 +7,7 @@
  */
 class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resource
 {
-    protected function _buildQuote($quote)
+    protected function _buildQuote($quote, $customer)
     {
         $quoteData = array();
 
@@ -28,7 +28,6 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
             'base_discount_amount'          => $quote->getShippingAddress()->getBaseDiscountAmount()
         ));
 
-
         foreach ($quote->getAllVisibleItems() as $item) {
 
             $itemData = array(
@@ -46,20 +45,18 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
         }
 
         // Add address info into quote data
-        $address = $quote->getBillingAddress();
-        $quoteData['address'] = array(
-            'customer_address_id'   => $address->getCustomerAddressId(),
-            'address_type'          => $address->getAddresstype(),
-            'email'                 => $address->getEmail(),
-            'firstname'             => $address->getFirstname(),
-            'lastname'              => $address->getLastname(),
-            'street'                => $address->getStreet(),
-            'city'                  => $address->getCity(),
-            'country'               => $address->getCountryId(),
-            'telephone'             => str_replace(array(' ', '-', '/'), '', $address->getTelephone()),
-            'same_as_billing'       => $address->getSameAsBilling(),
+        $quoteData['customer'] = array (
+            'customer_id'   => $quote->getCustomerId(),
+            'customer_email' => $quote->getCustomerEmail()
         );
-
+        //$address = $quote->getBillingAddress();
+        //$customer = Mage::getMod$quote->getCustomerId()
+        $customerAddress = array();
+        foreach ($customer->getAddresses() as $address) {
+            $debug = true;
+            $customerAddress[] = $address->toArray();
+        }
+        $quoteData['customer']['address'] = $customerAddress;
         $quoteData['shipping'] = $this->getShippingMethods();
 
         $quoteData['payment'] = $this->getPaymentMethods();
@@ -78,7 +75,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
             $options[] = array(
                 'value' => $_code,
                 'label' => $_title,
-                'rate'  => $_method->getPrice()
+                'rate'  => Mage::getStoreConfig("carriers/$_code/price")
             );
         }
         if($isMultiSelect) {
