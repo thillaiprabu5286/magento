@@ -62,7 +62,7 @@
                         <create>1</create>
                     </guest>
                     <admin>
-                        <retrieve>1</retrieve>
+                        <create>1</create>
                     </admin>
                 </privileges>
                 <routes>
