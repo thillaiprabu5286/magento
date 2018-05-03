@@ -17,6 +17,9 @@
                     <guest>
                         <retrieve>1</retrieve>
                     </guest>
+                    <admin>
+                        <retrieve>1</retrieve>
+                    </admin>
                 </privileges>
                 <routes>
                     <route_collection_store_products_v2>
@@ -36,6 +39,9 @@
                     <guest>
                         <retrieve>1</retrieve>
                     </guest>
+                    <admin>
+                        <retrieve>1</retrieve>
+                    </admin>
                 </privileges>
                 <routes>
                     <route_collection_store_category_products_v2>
@@ -55,6 +61,9 @@
                     <guest>
                         <create>1</create>
                     </guest>
+                    <admin>
+                        <retrieve>1</retrieve>
+                    </admin>
                 </privileges>
                 <routes>
                     <route_collection_create_customerv2>
@@ -74,6 +83,9 @@
                     <guest>
                         <retrieve>1</retrieve>
                     </guest>
+                    <admin>
+                        <retrieve>1</retrieve>
+                    </admin>
                 </privileges>
                 <routes>
                     <route_collection_city_v2>

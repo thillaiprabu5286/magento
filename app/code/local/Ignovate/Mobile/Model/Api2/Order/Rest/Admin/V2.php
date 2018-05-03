@@ -25,7 +25,6 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                 Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
             );
         }
-
     }
 
     /**
@@ -40,7 +39,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
             $this->_initSession($orderData['session']);
 
             try {
-                
+
                 $this->_processQuote($orderData);
 
                 if (!empty($orderData['payment'])) {
