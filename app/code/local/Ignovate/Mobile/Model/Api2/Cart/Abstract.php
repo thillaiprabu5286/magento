@@ -49,17 +49,14 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
             'customer_id'   => $quote->getCustomerId(),
             'customer_email' => $quote->getCustomerEmail()
         );
-        //$address = $quote->getBillingAddress();
-        //$customer = Mage::getMod$quote->getCustomerId()
         $customerAddress = array();
         foreach ($customer->getAddresses() as $address) {
-            $debug = true;
             $customerAddress[] = $address->toArray();
         }
         $quoteData['customer']['address'] = $customerAddress;
         $quoteData['shipping'] = $this->getShippingMethods();
 
-        $quoteData['payment'] = $this->getPaymentMethods();
+        $quoteData['payment'][] = $this->getPaymentMethods();
 
         return $quoteData;
     }
@@ -73,7 +70,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
             if(!$_title = Mage::getStoreConfig("carriers/$_code/title"))
                 $_title = $_code;
             $options[] = array(
-                'value' => $_code,
+                'value' => $_code . '_' . $_code,
                 'label' => $_title,
                 'rate'  => Mage::getStoreConfig("carriers/$_code/price")
             );
