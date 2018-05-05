@@ -74,6 +74,25 @@
                 </routes>
                 <versions>1</versions>
             </customer_api2>
+            <customer_orders_api2 translate="title" module="ignovate_mobile">
+                <group>mobile_app</group>
+                <title>Customer Orders</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_customer_orders</model>
+                <privileges>
+                    <admin>
+                        <retrieve>1</retrieve>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_entity_order_historyv2>
+                        <route>/customer/orders/:id/store/:store_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_order_historyv2>
+                </routes>
+                <versions>1</versions>
+            </customer_orders_api2>
             <store_api2 translate="title" module="ignovate_mobile">
                 <group>mobile_app</group>
                 <title>Site Info</title>
