@@ -147,6 +147,7 @@
                 <privileges>
                     <admin>
                         <create>1</create>
+                        <retrieve>1</retrieve>
                     </admin>
                 </privileges>
                 <routes>
@@ -155,6 +156,11 @@
                         <action_type>collection</action_type>
                         <version>2</version>
                     </route_collection_order_v2>
+                    <route_entity_order_get_v2>
+                        <route>/order/:id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_order_get_v2>
                 </routes>
                 <versions>1</versions>
             </order_api2>

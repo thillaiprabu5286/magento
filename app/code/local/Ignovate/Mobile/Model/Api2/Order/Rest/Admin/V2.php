@@ -114,5 +114,83 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
         return $this;
     }
 
+    public function _retrieve()
+    {
+        $orderId = $this->getRequest()->getParam('id');
+        if (empty($orderId)) {
+            $this->_critical(self::RESOURCE_NOT_FOUND);
+        }
+
+        try {
+
+            $order = Mage::getModel('sales/order')->load($orderId);
+
+            return $this->_buildOrderData($order);
+
+        } catch (Exception $e) {
+            throw new Mage_Api2_Exception(
+                $e->getMessage(),
+                Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
+            );
+        }
+    }
+
+    /**
+     * Prepare Order Response Data
+     *
+     * @param $order
+     * @return array
+     */
+    protected function _buildOrderData($order)
+    {
+        $orderData = array (
+            'order_number' => $order->getIncrementId(),
+            'grand_total' => $order->getGrandTotal(),
+            'status_label' => Mage::helper('core')->__($order->getStatusLabel())
+        );
+
+        $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
+        $orderData['customer'] = array (
+            'customer_id' => $customer->getId(),
+            'customer_email' => $customer->getEmail()
+        );
+
+        $itemData = array();
+        foreach ($order->getAllVisibleItems() as $item) {
+
+            if ($item->getProductType() == 'configurable') {
+                continue;
+            }
+
+            $childItems = array(
+                'product_id' => $item->getProductId(),
+                'sku' => $item->getSku(),
+                'product_type' => $item->getProductType(),
+                'price' => $item->getPrice(),
+                'qty_ordered' => $item->getQtyOrdered()
+            );
+
+            $itemData[] = $childItems;
+        }
+        $orderData['items'] = $itemData;
+
+        // Order Address details
+        $address = $order->getBillingAddress();
+        if ($address && $address->getId()) {
+            $orderData['billing'] = $address->getData();
+        }
+
+        $address = $order->getShippingAddress();
+        if ($address && $address->getId()) {
+            $orderData['shipping'] = $address->getData();
+        }
+
+        $payment = $order->getPayment();
+        if ($payment && $payment->getId()) {
+            $orderData['payment'] = $payment->getData();
+        }
+
+        return $orderData;
+    }
 }
 
