@@ -37,7 +37,8 @@ class Ignovate_Mobile_Model_Api2_Customer_Orders_Abstract extends Ignovate_Api2_
                     'order_id' => 'order.entity_id',
                     'increment_id' => 'order.increment_id',
                     'name'  => 'order.shipping_name',
-                    'total' => 'order.grand_total'
+                    'total' => 'order.grand_total',
+                    'ordered_date' => 'order.created_at'
                 )
             );
 
