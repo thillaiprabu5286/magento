@@ -14,18 +14,20 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
         $quoteData = array_merge($quoteData, array(
             'quote_id'                      => $quote->getId(),
             'subtotal'                      => $quote->getShippingAddress()->getSubtotal(),
-            'base_subtotal'                 => $quote->getShippingAddress()->getBaseSubtotal(),
+            //'base_subtotal'                 => $quote->getShippingAddress()->getBaseSubtotal(),
             'subtotal_with_discount'        => $quote->getShippingAddress()->getSubtotalWithDiscount(),
-            'base_subtotal_with_discount'   => $quote->getShippingAddress()->getBaseSubtotalWithDiscount(),
+            //'base_subtotal_with_discount'   => $quote->getShippingAddress()->getBaseSubtotalWithDiscount(),
             'grand_total'                   => $quote->getShippingAddress()->getGrandTotal(),
-            'base_grand_total'              => $quote->getShippingAddress()->getBaseGrandTotal(),
+            //'base_grand_total'              => $quote->getShippingAddress()->getBaseGrandTotal(),
             'currency_code'                 => $quote->getQuoteCurrencyCode(),
             'cod_fee'                       => $quote->getShippingAddress()->getCodFee(),
-            'base_cod_fee'                  => $quote->getShippingAddress()->getBaseCodFee(),
+            //'base_cod_fee'                  => $quote->getShippingAddress()->getBaseCodFee(),
             'shipping_fee'                  => $quote->getShippingAddress()->getShippingAmount(),
-            'base_shipping_fee'             => $quote->getShippingAddress()->getBaseShippingAmount(),
+            //'base_shipping_fee'             => $quote->getShippingAddress()->getBaseShippingAmount(),
             'discount_amount'               => $quote->getShippingAddress()->getDiscountAmount(),
-            'base_discount_amount'          => $quote->getShippingAddress()->getBaseDiscountAmount()
+            //'base_discount_amount'          => $quote->getShippingAddress()->getBaseDiscountAmount(),
+            'tax_amount'                    => $quote->getShippingAddress()->getTaxAmount(),
+            //'base_tax_amount'               => $quote->getShippingAddress()->getBaseTaxAmount(),
         ));
 
         foreach ($quote->getAllVisibleItems() as $item) {
