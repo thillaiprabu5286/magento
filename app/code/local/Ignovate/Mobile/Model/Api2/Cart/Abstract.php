@@ -56,7 +56,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
         $quoteData['customer']['address'] = $customerAddress;
         $quoteData['shipping'] = $this->getShippingMethods();
 
-        $quoteData['payment'][] = $this->getPaymentMethods();
+        $quoteData['payment'] = $this->getPaymentMethods();
 
         return $quoteData;
     }
@@ -88,7 +88,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
         $methods = array();
         foreach ($payments as $paymentCode=>$paymentModel) {
             $paymentTitle = Mage::getStoreConfig('payment/'.$paymentCode.'/title');
-            $methods[$paymentCode] = array(
+            $methods[] = array(
                 'label'   => $paymentTitle,
                 'value' => $paymentCode,
             );
