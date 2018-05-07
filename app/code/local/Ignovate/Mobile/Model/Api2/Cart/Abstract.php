@@ -41,7 +41,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
                 'price'          => $item->getPrice(),
                 'base_price'     => $item->getBasePrice(),
                 'row_total'      => $item->getRowTotal(),
-                'base_row_total' => $item->getBaseRowTotal()
+                //'base_row_total' => $item->getBaseRowTotal()
             );
             $quoteData['items'][] = $itemData;
         }
