@@ -15,7 +15,7 @@ class Ignovate_Mobile_Model_Api2_Products_Rest_Admin_V2
             ->from(
                 array('product' => 'catalog_product_flat_' . $storeId),
                 array(
-                    'id'                => 'product.url_key',
+                    'product_id'        => 'product.entity_id',
                     'name'              => 'product.name',
                     'thumbnail'         => 'product.thumbnail',
                     'small_image'       => 'product.small_image',
@@ -26,6 +26,15 @@ class Ignovate_Mobile_Model_Api2_Products_Rest_Admin_V2
                     'special_price'     => 'product.special_price'
                 )
             );
+
+        $collectionSelect->joinLeft(
+            array ('cat' => 'catalog_category_product'),
+            'cat.product_id = product.entity_id'
+        );
+
+        $collectionSelect->where(
+            'product.special_price > 0'
+        );
 
         $indexData = $readAdapter->query($collectionSelect)->fetchAll();
 
