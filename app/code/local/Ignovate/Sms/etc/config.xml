@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ignovate_Sms>
+            <version>0.0.1</version>
+        </Ignovate_Sms>
+    </modules>
+    <global>
+        <helpers>
+            <ignovate_sms>
+                <class>Ignovate_Sms_Helper</class>
+            </ignovate_sms>
+        </helpers>
+    </global>
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <ignovateconfig>
+                                            <title>All</title>
+                                        </ignovateconfig>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+</config>

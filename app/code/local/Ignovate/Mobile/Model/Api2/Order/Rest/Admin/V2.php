@@ -51,6 +51,11 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                     ->importPostData($orderData['order'])
                     ->createOrder();
 
+                //Send sms after order creation
+                /** @var Ignovate_Sms_Helper_Data $helper */
+                $helper = Mage::helper('ignovate_sms');
+                $helper->sendSms($order, 'NewVegOrder');
+
                 $this->_getSession()->clear();
 
                 $params = array ('id' => $order->getIncrementId());
