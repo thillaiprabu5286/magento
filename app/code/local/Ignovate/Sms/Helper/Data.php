@@ -20,7 +20,7 @@ class Ignovate_Sms_Helper_Data extends Mage_Core_Helper_Abstract
         }*/
 
 
-        $this->_url = 'https://2factor.in/API/R1/';
+        $this->_url = 'https://2factor.in/API/R1/module';
         $this->_apiKey = 'd01b7fb5-4941-11e8-a895-0200cd936042&to=9840297768';
         $this->_senderId = 'neword';
 
