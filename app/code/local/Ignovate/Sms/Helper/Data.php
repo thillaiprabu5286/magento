@@ -20,8 +20,8 @@ class Ignovate_Sms_Helper_Data extends Mage_Core_Helper_Abstract
         }*/
 
 
-        $this->_url = 'https://2factor.in/API/R1/module';
-        $this->_apiKey = 'd01b7fb5-4941-11e8-a895-0200cd936042&to=9840297768';
+        $this->_url = 'https://2factor.in/API/R1/';
+        $this->_apiKey = 'd01b7fb5-4941-11e8-a895-0200cd936042';
         $this->_senderId = 'Veggie';
 
         return $this;
@@ -33,25 +33,22 @@ class Ignovate_Sms_Helper_Data extends Mage_Core_Helper_Abstract
 
         $data = array (
             'module'    => 'TRANS_SMS',
-            'apiKey'    => $this->_apiKey,
-            'from'  => $this->_senderId,
+            'apikey'    => $this->_apiKey,
             'to'    => $mobile,
+            'from'  => $this->_senderId,
             'templatename' => $template,
             'var1'  => $order->getIncrementId()
         );
 
         $url = $this->_url . "?" . http_build_query($data);
 
-        $client = curl_init($url);
-        curl_setopt($client, CURLOPT_HEADER, true);    // we want headers
-        curl_setopt($client, CURLOPT_NOBODY, true);    // we don't need body
-        curl_setopt($client, CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($client, CURLOPT_TIMEOUT,10);
-        $output = curl_exec($client);
-        $httpcode = curl_getinfo($client, CURLINFO_HTTP_CODE);
-        curl_close($client);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $data = curl_exec($ch);
+        curl_close($ch);
 
-        return $httpcode;
+        return $data;
     }
 
 }
