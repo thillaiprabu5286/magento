@@ -54,7 +54,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                 //Send sms after order creation
                 /** @var Ignovate_Sms_Helper_Data $helper */
                 $helper = Mage::helper('ignovate_sms');
-                $helper->sendSms($order, 'NewVegOrder');
+                $helper->sendSms($order, 'NewOrderNew');
 
                 $this->_getSession()->clear();
 

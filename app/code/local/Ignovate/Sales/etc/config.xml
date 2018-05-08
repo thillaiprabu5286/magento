@@ -21,5 +21,16 @@
                 </rewrite>
             </adminhtml>
         </blocks>
+        <events>
+            <sales_order_save_after>
+                <observers>
+                    <sales_order_complete_send_sms>
+                        <type>singleton</type>
+                        <class>ignovate_sales/observer</class>
+                        <method>triggerCompleteSms</method>
+                    </sales_order_complete_send_sms>
+                </observers>
+            </sales_order_save_after>
+        </events>
     </global>
 </config>
