@@ -26,7 +26,7 @@
                 <observers>
                     <sales_order_complete_send_sms>
                         <type>singleton</type>
-                        <class>ignovate_sales/observer</class>
+                        <class>ignovate_sales_model_observer</class>
                         <method>triggerCompleteSms</method>
                     </sales_order_complete_send_sms>
                 </observers>
