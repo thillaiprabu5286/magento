@@ -29,6 +29,8 @@ class Ignovate_Sms_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function sendSms($order, $template)
     {
+        Mage::log("---------", null , 'sms.log');
+        Mage::log($order->getIncrementId(), null, 'sms.log');
         $mobile = $order->getBillingAddress()->getTelephone();
 
         $data = array (
