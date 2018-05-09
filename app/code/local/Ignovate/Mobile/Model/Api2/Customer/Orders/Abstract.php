@@ -14,10 +14,10 @@ class Ignovate_Mobile_Model_Api2_Customer_Orders_Abstract extends Ignovate_Api2_
      * @throws Mage_Api2_Exception
      * @return Mage_Customer_Model_Customer
      */
-    protected function _loadCustomerById($id, $storeId)
+    protected function _loadCustomerById($id)
     {
         /* @var $customer Mage_Customer_Model_Customer */
-        $customer = Mage::getModel('customer/customer')->setStoreId($storeId)->load($id);
+        $customer = Mage::getModel('customer/customer')->load($id);
         if (!$customer->getId()) {
             $this->_critical(self::RESOURCE_NOT_FOUND);
         }
@@ -56,9 +56,6 @@ class Ignovate_Mobile_Model_Api2_Customer_Orders_Abstract extends Ignovate_Api2_
         $collectionSelect
             ->where(
                 'order.customer_id = ?', $customer->getId()
-            )
-            ->where(
-                'order.store_id = ?', $storeId
             )
             ->order(
                 'order.created_at DESC'
