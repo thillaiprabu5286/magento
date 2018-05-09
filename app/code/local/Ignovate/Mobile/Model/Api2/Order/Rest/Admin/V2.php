@@ -60,14 +60,14 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
 
                 $params = array ('id' => $order->getIncrementId());
                 $this->_successMessage(
-                    'Order Created Successfully',
+                    'Order placed successfully.',
                     Mage_Api2_Model_Server::HTTP_OK,
                     $params
                 );
             } catch (Exception $e){
                 $this->_critical(
-                    Ignovate_Api2_Model_Resource::RESOURCE_REQUEST_DATA_INVALID,
-                    Mage_Api2_Model_Server::HTTP_NOT_FOUND
+                    'Order not placed. Please veggies8to8 administrator.',
+                    Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
                 );
             }
         }
