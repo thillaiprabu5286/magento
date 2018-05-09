@@ -66,7 +66,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                 );
             } catch (Exception $e){
                 $this->_critical(
-                    'Order not placed. Please veggies8to8 administrator.',
+                    'Order not placed. Please veggies8to8 administrator.' . $e->getMessage(),
                     Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
                 );
             }
@@ -148,7 +148,6 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     protected function _buildOrderData($order)
     {
-        $debug = true;
         $orderData = array (
             'order_number' => $order->getIncrementId(),
             'grand_total' => $order->getGrandTotal(),
