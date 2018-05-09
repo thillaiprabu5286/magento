@@ -88,7 +88,10 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
         $payments = Mage::getSingleton('payment/config')->getActiveMethods();
 
         $methods = array();
-        foreach ($payments as $paymentCode=>$paymentModel) {
+        foreach ($payments as $paymentCode => $paymentModel) {
+            if ($paymentCode == 'paypal_billing_agreement') {
+                continue;
+            }
             $paymentTitle = Mage::getStoreConfig('payment/'.$paymentCode.'/title');
             $methods[] = array(
                 'label'   => $paymentTitle,

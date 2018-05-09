@@ -148,6 +148,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     protected function _buildOrderData($order)
     {
+        $debug = true;
         $orderData = array (
             'order_number' => $order->getIncrementId(),
             'grand_total' => $order->getGrandTotal(),
@@ -190,6 +191,12 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
         if ($address && $address->getId()) {
             $orderData['shipping'] = $address->getData();
         }
+
+        $orderData['shipping_method'] = array (
+            'value' => $order->getShippingAmount(),
+            'code' => $order->getShippingMethod(),
+            'label' => $order->getShippingDescription()
+        );
 
         $payment = $order->getPayment();
         if ($payment && $payment->getId()) {
