@@ -41,12 +41,15 @@ class Ignovate_Sms_Helper_Data extends Mage_Core_Helper_Abstract
         );
 
         $url = $this->_url . "?" . http_build_query($data);
+        Mage::log($url, null, 'sms.log');
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         $data = curl_exec($ch);
         curl_close($ch);
+
+        Mage::log($data, null, 'sms.log');
 
         return $data;
     }
