@@ -66,7 +66,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                 );
             } catch (Exception $e){
                 $this->_critical(
-                    'Order not placed. Please veggies8to8 administrator.' . $e->getMessage(),
+                    (string)$e->getMessage(),
                     Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
                 );
             }
