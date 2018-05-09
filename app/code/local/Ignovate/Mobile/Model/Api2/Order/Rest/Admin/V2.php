@@ -66,8 +66,8 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                 );
             } catch (Exception $e){
                 $this->_critical(
-                    (string)$e->getMessage(),
-                    Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
+                    'Order not placed. Please contact veggies8to8 administrator.',
+                    Mage_Api2_Model_Server::HTTP_NOT_FOUND
                 );
             }
         }
