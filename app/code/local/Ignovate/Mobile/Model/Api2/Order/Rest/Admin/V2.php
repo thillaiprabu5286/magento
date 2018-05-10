@@ -158,7 +158,8 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
         $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
         $orderData['customer'] = array (
             'customer_id' => $customer->getId(),
-            'customer_email' => $customer->getEmail()
+            'customer_email' => $customer->getEmail(),
+            'name'  => $customer->getFirstname() . ' ' . $customer->getLastname()
         );
 
         $itemData = array();
@@ -171,6 +172,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
             $childItems = array(
                 'product_id' => $item->getProductId(),
                 'sku' => $item->getSku(),
+                'name'  => $item->getName(),
                 'product_type' => $item->getProductType(),
                 'price' => $item->getPrice(),
                 'qty_ordered' => $item->getQtyOrdered()
