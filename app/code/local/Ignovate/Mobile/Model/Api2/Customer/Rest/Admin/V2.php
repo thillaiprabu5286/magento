@@ -50,11 +50,14 @@ class Ignovate_Mobile_Model_Api2_Customer_Rest_Admin_V2
                 $newCustomer->setPasswordConfirmation($request['key']);
 
                 // NOTE: preset of first and last name is temporal
-                if (!$newCustomer->getFirstname()) {
-                    $newCustomer->setFirstname('FirstName');
+                if (empty($request['name'])) {
+                    $newCustomer->setFirstname('Name');
+                } else {
+                    $newCustomer->setFirstname($request['name']);
                 }
+
                 if (!$newCustomer->getLastname()) {
-                    $newCustomer->setLastname('LastName');
+                    $newCustomer->setLastname('.');
                 }
 
                 // Validate customer model
