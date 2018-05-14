@@ -201,7 +201,12 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
 
         $payment = $order->getPayment();
         if ($payment && $payment->getId()) {
-            $orderData['payment'] = $payment->getData();
+            $method = $payment->getMethod();
+            $paymentTitle = Mage::getStoreConfig('payment/'.$method.'/title');
+            $orderData['payment_method'] = array (
+                'code' => $payment->getMethod(),
+                'label' => $paymentTitle
+            );
         }
 
         return $orderData;
