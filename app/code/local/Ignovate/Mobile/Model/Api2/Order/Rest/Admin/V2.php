@@ -152,7 +152,8 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
             'order_number' => $order->getIncrementId(),
             'grand_total' => $order->getGrandTotal(),
             'ordered_date' => $order->getCreatedAt(),
-            'status_label' => Mage::helper('core')->__($order->getStatusLabel())
+            'status_label' => Mage::helper('core')->__($order->getStatusLabel()),
+            'tax_amount'    => $order->getTaxAmount()
         );
 
         $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
