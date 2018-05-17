@@ -23,7 +23,7 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Abstract extends Ignovate_Api2
         }
         return $customer;
     }
-    
+
     /**
      * Load customer address by id
      *

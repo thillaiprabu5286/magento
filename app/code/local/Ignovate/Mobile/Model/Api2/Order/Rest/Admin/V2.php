@@ -58,19 +58,17 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
 
                 $this->_getSession()->clear();
 
-                return array (
-                    'status' => 'success',
-                    'message' => 'Order placed successfully.',
-                    'code'  => Mage_Api2_Model_Server::HTTP_OK
+                $this->_successMessage(
+                    'Order successfully created',
+                    Mage_Api2_Model_Server::HTTP_OK,
+                    array(
+                        'order_id' => $order->getIncrementId(),
+                    )
                 );
 
             } catch (Exception $e){
 
-                return array (
-                    'status' => 'error',
-                    'message' => 'Order not placed. Please contact veggies8to8 administrator.',
-                    'code'  => Mage_Api2_Model_Server::HTTP_NOT_FOUND
-                );
+                $this->_critical($e->getMessage(), Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR);
 
             }
         }

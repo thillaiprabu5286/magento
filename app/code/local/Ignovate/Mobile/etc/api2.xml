@@ -179,6 +179,7 @@
                     <admin>
                         <create>1</create>
                         <retrieve>1</retrieve>
+                        <update>1</update>
                     </admin>
                 </privileges>
                 <routes>
@@ -187,6 +188,11 @@
                         <action_type>entity</action_type>
                         <version>2</version>
                     </route_entity_get_address_v2>
+                    <route_collection_get_address_v2>
+                        <route>/customer/address/:customer_id</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_get_address_v2>
                     <route_collection_create_address_v2>
                         <route>/customer/address/:id</route>
                         <action_type>collection</action_type>

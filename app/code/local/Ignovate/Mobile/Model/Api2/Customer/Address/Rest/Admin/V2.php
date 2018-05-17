@@ -73,6 +73,16 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
 
     public function _retrieve()
     {
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        if (empty($customer_id)) {
+            Mage::throwException('Customer is not specified');
+        }
+
+        $address_id = $this->getRequest()->getParam('address_id');
+        if (empty($address_id)) {
+            Mage::throwException('Customer Address is not specified');
+        }
+
         $address = $this->_loadCustomerAddressById(
             $this->getRequest()->getParam('address_id')
         );
@@ -82,5 +92,99 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
         }
 
         return $address;
+    }
+
+    public function _retrieveCollection()
+    {
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        if (empty($customer_id)) {
+            Mage::throwException('Customer is not specified');
+        }
+
+        $customer = $this->_loadCustomerById(
+            $this->getRequest()->getParam('customer_id')
+        );
+        try {
+            $addressCollection = Mage::getResourceModel('customer/address_collection')
+                ->setCustomerFilter($customer, false)
+                ->addAttributeToSelect('*')
+            ;
+
+
+            if ($addressCollection->getSize() == 0) {
+                $this->_critical("Empty address collection");
+            }
+
+        } catch (Exception $e) {
+            // Catch any type of exception and convert it into API2 exception
+            throw new Mage_Api2_Exception(
+                $e->getMessage(),
+                Mage_Api2_Model_Server::HTTP_NOT_FOUND
+            );
+        }
+
+        return $addressCollection->getData();
+    }
+
+    public function _update($request)
+    {
+        $consumer = Mage::getModel('oauth/consumer');
+        if (empty($request['api_key'])) {
+            Mage::throwException('Consumer key is not specified');
+        }
+
+        $consumer->load($request['api_key'], 'key');
+        if (!$consumer->getId()) {
+            Mage::throwException('Consumer key is incorrect');
+        }
+
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        if (empty($customer_id)) {
+            Mage::throwException('Customer is not specified');
+        }
+
+        $address_id = $this->getRequest()->getParam('address_id');
+        if (empty($address_id)) {
+            Mage::throwException('Customer Address is not specified');
+        }
+
+        $address = $this->_loadCustomerAddressById($address_id);
+
+        $customer = $this->_loadCustomerById($customer_id);
+
+        // Check the owner of loaded resource
+        if ($this->getRequest()->getParam('customer_id') != $address->getCustomerId()) {
+            $this->_critical(self::RESOURCE_NOT_FOUND);
+        }
+
+        try {
+
+            $address->addData($request);
+
+            $validate = $address->validate();
+            if ($validate !== true) {
+                foreach ($validate as $code => $error) {
+                    if ($error === true) {
+                        Mage::throwException(Mage::helper('customer')->__('Attribute "%s" is required.', $code));
+                    }
+                    else {
+                        Mage::throwException($error);
+                    }
+                }
+            }
+            $address->save();
+
+            $this->_successMessage(
+                'Address successfully updated',
+                Mage_Api2_Model_Server::HTTP_OK,
+                array(
+                    'customer_id' => $address->getCustomerId(),
+                    'customer_address_id' => $address->getId()
+                )
+            );
+
+        } catch (Exception $e) {
+            $this->_critical($e->getMessage(), Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR);
+        }
     }
 }
