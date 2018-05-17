@@ -128,6 +128,7 @@
                 <privileges>
                     <admin>
                         <create>1</create>
+                        <update>1</update>
                     </admin>
                 </privileges>
                 <routes>
@@ -136,6 +137,11 @@
                         <action_type>collection</action_type>
                         <version>2</version>
                     </route_collection_cart_v2>
+                    <route_entity_update_cart_v2>
+                        <route>/cart/quote/:quote_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_update_cart_v2>
                 </routes>
                 <versions>1</versions>
             </cart_api2>
@@ -164,6 +170,31 @@
                 </routes>
                 <versions>1</versions>
             </order_api2>
+            <customer_address_api2>
+                <group>mobile_app</group>
+                <title>Customer Address</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_customer_address</model>
+                <privileges>
+                    <admin>
+                        <create>1</create>
+                        <retrieve>1</retrieve>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_entity_get_address_v2>
+                        <route>/customer/:customer_id/address/:address_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_get_address_v2>
+                    <route_collection_create_address_v2>
+                        <route>/customer/address/:id</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_create_address_v2>
+                </routes>
+                <versions>1</versions>
+            </customer_address_api2>
         </resources>
     </api2>
 </config>

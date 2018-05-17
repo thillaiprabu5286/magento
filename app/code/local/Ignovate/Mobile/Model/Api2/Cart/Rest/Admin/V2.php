@@ -48,8 +48,8 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
 
             $cart1 = Mage::getSingleton('checkout/session');
             $cart1->setCartWasUpdated(true);
-            $result_array["quoteid"] = $quoteid=$cart1->getQuoteId();
-            $result_array["items_count"]  =Mage::helper('checkout/cart')->getCart()->getItemsCount();
+            $result_array["quoteid"] = $quoteid = $cart1->getQuoteId();
+            $result_array["items_count"] = Mage::helper('checkout/cart')->getCart()->getItemsCount();
 
             //get quote using sales/quote
             $quote = Mage::getModel('sales/quote')->load($quoteid);
@@ -70,12 +70,12 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
             }
             $base_currency_code=Mage::app()->getStore()->getBaseCurrencyCode();
 
-            $base_grand_total=$quote->getBaseGrandTotal();
-            $grand_total=Mage::helper('directory')->currencyConvert($base_grand_total, $base_currency_code , $currency_code);
-            $base_subtotal=$quote->getBaseSubtotal();
+            $base_grand_total =$quote->getBaseGrandTotal();
+            $grand_total = Mage::helper('directory')->currencyConvert($base_grand_total, $base_currency_code , $currency_code);
+            $base_subtotal = $quote->getBaseSubtotal();
             $subtotal = Mage::helper('directory')->currencyConvert($base_subtotal, $base_currency_code , $currency_code);
             $base_subtotal_with_discount = $quote->getBaseSubtotalWithDiscount();
-            $subtotal_with_discount=Mage::helper('directory')->currencyConvert($base_subtotal_with_discount, $base_currency_code , $currency_code);
+            $subtotal_with_discount = Mage::helper('directory')->currencyConvert($base_subtotal_with_discount, $base_currency_code , $currency_code);
 
             $quote->setGrandTotal($grand_total)
                 ->setSubtotal($subtotal)
@@ -93,5 +93,56 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
             );
         }
     }
+
+    public function _update($request)
+    {
+        try {
+
+            $consumer = Mage::getModel('oauth/consumer');
+            if (empty($request['api_key'])) {
+                Mage::throwException('Consumer key is not specified');
+            }
+
+            $consumer->load($request['api_key'], 'key');
+            if (!$consumer->getId()) {
+                Mage::throwException('Consumer key is incorrect');
+            }
+
+            $quoteId = $this->getRequest()->getParam('quote_id');
+            if (empty($quoteId)) {
+                Mage::throwException('Quote is not specified');
+            }
+
+
+            /** @var Mage_Sales_Model_Quote $quote */
+            $quote = Mage::getModel('sales/quote')
+                ->setStoreId($request['store_id'])
+                ->load($quoteId);
+
+            $customer = Mage::getModel('customer/customer')->load($quote->getCustomerId());
+            $response = $this->_buildQuote($quote, $customer);
+
+            return $response;
+
+        } catch (Mage_Core_Exception $e) {
+            throw new Mage_Api2_Exception(
+                $e->getMessage(),
+                Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
+            );
+        }
+    }
+
+    protected function _getFinalPrice($product)
+    {
+        //Look for special price
+        if ($product->getSpecialPrice() > 0) {
+            $price = $product->getSpecialPrice();
+        } else {
+            $price = $product->getPrice();
+        }
+
+        return $price;
+    }
+
 }
 
