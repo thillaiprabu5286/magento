@@ -13,6 +13,7 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
      */
     public function _create($request)
     {
+        $debug = true;
         $consumer = Mage::getModel('oauth/consumer');
         if (empty($request['api_key'])) {
             Mage::throwException('Consumer key is not specified');
@@ -23,13 +24,13 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
             Mage::throwException('Consumer key is incorrect');
         }
 
-        $customer_id = $this->getRequest()->getParam('id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         if (empty($customer_id)) {
             Mage::throwException('Customer is not specified');
         }
 
         $customer = $this->_loadCustomerById(
-            $this->getRequest()->getParam('id')
+            $this->getRequest()->getParam('customer_id')
         );
 
         /** @var Mage_Customer_Model_Address $address */
