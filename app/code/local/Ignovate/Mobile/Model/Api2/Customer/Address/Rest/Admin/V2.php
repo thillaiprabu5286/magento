@@ -102,18 +102,11 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
             Mage::throwException('Customer is not specified');
         }
 
-        $customer = $this->_loadCustomerById(
-            $this->getRequest()->getParam('customer_id')
-        );
         try {
-            $addressCollection = Mage::getResourceModel('customer/address_collection')
-                ->setCustomerFilter($customer, false)
-                ->addAttributeToSelect('*')
-            ;
-
-
-            if ($addressCollection->getSize() == 0) {
-                $this->_critical("Empty address collection");
+            $customer = Mage::getModel('customer/customer')->load($customer_id);
+            $customerAddress = array();
+            foreach ($customer->getAddresses() as $address) {
+                $customerAddress[] = $address->toArray();
             }
 
         } catch (Exception $e) {
@@ -124,7 +117,7 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
             );
         }
 
-        return $addressCollection->getData();
+        return $customerAddress;
     }
 
     public function _update($request)
