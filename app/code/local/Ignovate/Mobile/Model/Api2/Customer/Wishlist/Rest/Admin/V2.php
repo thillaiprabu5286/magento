@@ -10,12 +10,12 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
      */
     protected function _retrieveCollection()
     {
+        $debug = true;
         $customerId = $this->getRequest()->getParam('customer_id');
-
         $items = $this->_getItems(
-            $customerId
+            $customerId,
+            $this->getRequest()->getParam('store_id')
         );
-
         return $items;
     }
 
@@ -25,6 +25,8 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
     protected function _create(array $data)
     {
         $customerId = (int)$this->getRequest()->getParam('customer_id');
+        $storeId = (int)$this->getRequest()->getParam('store_id');
+
         $productId  = isset($data['product_id']) ? $data['product_id'] : false;
         try {
             if (!$productId) {
@@ -55,11 +57,10 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
             $item->setProductId($product->getId())
                 ->setWishlistId($wishlist->getId())
                 ->setAddedAt(now())
-                ->setStoreId($product->getStoreId())
+                ->setStoreId($storeId)
                 ->setQty(1)
                 ->save();
         } catch (Exception $e) {
-
             return array(
                 'status' => 'error',
                 'message'   => $e->getMessage()
@@ -68,7 +69,7 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
 
         return array(
             'status' => "success",
-            'message'   => "Item {$product->getName()} added success"
+            'message'   => "Item {$product->getName()} added to wishlist"
         );
     }
 
@@ -80,6 +81,7 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
         $customerId = $this->getRequest()->getParam('customer_id');
         $productId     = (int)$this->getRequest()->getParam('product_id');
 
+        $response = array();
         try {
             /** @var Mage_Wishlist_Model_Wishlist $wishlist */
             $wishlist = Mage::getModel('wishlist/wishlist')
@@ -87,17 +89,23 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
             if (null !== $wishlist->getId()) {
                 $items = $wishlist->getItemCollection();
                 $item  = $items->getItemByColumnValue('product_id', $productId);
+                $product = Mage::getModel('catalog/product')->load($productId);
                 if ($item) {
                     $item->delete();
-                    return array('success' => true);
+                    $response = array(
+                        'status' => 'success',
+                        'message'   => "Item {$product->getName()} removed from wishlist"
+                    );
                 }
             }
-            $this->_critical(self::RESOURCE_NOT_FOUND);
-        } catch (Mage_Core_Exception $e) {
-            $this->_critical($e->getMessage(), Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR);
         } catch (Exception $e) {
-            $this->_critical(self::RESOURCE_INTERNAL_ERROR);
+            return array(
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            );
         }
+
+        return $response;
     }
 
     /**
@@ -105,7 +113,7 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
      *
      * @return array
      */
-    protected function _getItems($customerId, $itemId = null)
+    protected function _getItems($customerId, $storeId)
     {
         $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($customerId);
 
@@ -113,27 +121,23 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
             return array();
         }
 
-        $collection = $wishlist->getItemCollection();
+        /** @var Mage_Wishlist_Model_Resource_Item_Collection $collection */
+        $collection = Mage::getResourceModel('wishlist/item_collection');
+        $collection->addWishlistFilter($wishlist)
+            ->addStoreFilter($storeId)
+            ->setVisibilityFilter();
 
-        if (null !== $itemId) {
-            $collection->getSelect()->where('wishlist_item_id = ?', (int)$itemId);
-        }
-
+        //$collection = $wishlist->getItemCollection();
         $result = array();
         foreach ($collection as $item) {
 
-            $product = $item->setStoreId($this->getStoreId())
-                ->setLang($this->getLang())
-                ->getProduct();
-
+            $product = $item->getProduct();
             $price = $product->getPrice();
             $specialPrice = $product->getSpecialPrice();
-
             $result[] = array(
                 'item_id' => $item->getId(),
                 'product_id' => $item->getProductId(),
                 'name' => $product->getName(),
-                'stock_status' => $product->getStockItem()->getIsInStock(),
                 'price' => $price,
                 'special_price' => $specialPrice,
                 'image_url' => $product->getImageUrl(),

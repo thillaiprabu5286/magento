@@ -215,7 +215,7 @@
                 </privileges>
                 <routes>
                     <route_collection_customer_wishlist>
-                        <route>/wishlist/:customer_id</route>
+                        <route>/wishlist/:customer_id/store/:store_id</route>
                         <action_type>collection</action_type>
                         <version>2</version>
                     </route_collection_customer_wishlist>
@@ -224,6 +224,11 @@
                         <action_type>entity</action_type>
                         <version>2</version>
                     </route_entity_customer_wishlist>
+                    <route_entity_customer_get_wishlist>
+                        <route>/wishlist/:customer_id/store/:store_id</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_entity_customer_get_wishlist>
                 </routes>
                 <versions>1</versions>
             </customer_wishlist_api2>
