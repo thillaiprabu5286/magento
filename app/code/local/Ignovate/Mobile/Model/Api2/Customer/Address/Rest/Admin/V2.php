@@ -28,6 +28,16 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
             Mage::throwException('Customer is not specified');
         }
 
+        if (empty($request['door_no'])
+            || empty($request['street_name'])
+        ) {
+            Mage::throwException('Address field missing');
+        }
+
+        if (empty($request['city_id'])) {
+            Mage::throwException('Store ID missing');
+        }
+
         $customer = $this->_loadCustomerById(
             $this->getRequest()->getParam('customer_id')
         );
@@ -36,13 +46,6 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
         $address = Mage::getModel('customer/address');
 
         try {
-
-            if (empty($request['door_no']) ||
-                empty($request['apt_name']) ||
-                empty($request['landmark'])
-            ) {
-                Mage::throwException('Address field missing');
-            }
 
             //Merge Extra Address fields
             $ext = array (
