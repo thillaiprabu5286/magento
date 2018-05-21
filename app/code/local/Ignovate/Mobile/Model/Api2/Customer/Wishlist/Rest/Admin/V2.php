@@ -10,7 +10,6 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
      */
     protected function _retrieveCollection()
     {
-        $debug = true;
         $customerId = $this->getRequest()->getParam('customer_id');
         $items = $this->_getItems(
             $customerId,
@@ -67,7 +66,6 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
      */
     protected function _delete()
     {
-        $debug = true;
         $customerId = $this->getRequest()->getParam('customer_id');
         $productId     = (int)$this->getRequest()->getParam('product_id');
         $storeId     = (int)$this->getRequest()->getParam('store_id');
@@ -123,39 +121,41 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
             ->setVisibilityFilter();
 
         //$collection = $wishlist->getItemCollection();
-        $result = array();
+        $productIds = array();
         foreach ($collection as $item) {
+            $productIds[] = $item->getProductId();
+        }
 
-            //Load product by store
-            $product = Mage::getModel('catalog/product')
-                ->setStoreId($storeId)
-                ->load($item->getProductId());
-
-            $price = $product->getPrice();
-            $specialPrice = $product->getSpecialPrice();
-            $result[] = array(
-                'item_id' => $item->getId(),
-                'product_id' => $item->getProductId(),
-                'name' => $product->getName(),
-                'price' => $price,
-                'special_price' => $specialPrice,
-                'image_url' => $product->getImageUrl(),
-                'sku' => $product->getSku(),
+        $collectionSelect = $this->getAdapter()->select()
+            ->from(
+                array('product' => 'catalog_product_flat_' . $storeId),
+                array(
+                    'product_id'        => 'product.entity_id',
+                    'name'              => 'product.name',
+                    'thumbnail'         => 'product.thumbnail',
+                    'small_image'       => 'product.small_image',
+                    'url_path'          => 'product.url_path',
+                    'url_key'           => 'product.url_key',
+                    'sku'               => 'product.sku',
+                    'price'             => 'product.price',
+                    'special_price'     => 'product.special_price'
+                )
             );
-        }
 
-        return $result;
+        $collectionSelect->joinLeft(
+            array ('cat' => 'catalog_category_product'),
+            'cat.product_id = product.entity_id'
+        );
+
+        $collectionSelect->where(
+            'product.entity_id IN (?)', $productIds
+        );
+
+        $str = (string)$collectionSelect;
+
+        $indexData = $this->getAdapter()->query($collectionSelect)->fetchAll();
+
+        return $indexData;
     }
-
-    /**
-     * Check if request customer id match api user
-     */
-    /*protected function _isOwner($customerId)
-    {
-        if ($this->getApiUser()->getUserId() !== $customerId) {
-            return false;
-        }
-        return true;
-    }*/
 
 }
