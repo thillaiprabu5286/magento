@@ -96,6 +96,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
 
     public function _update($request)
     {
+        $debug = true;
         try {
 
             $consumer = Mage::getModel('oauth/consumer');
@@ -113,23 +114,44 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
                 Mage::throwException('Quote is not specified');
             }
 
+            //Load Customer by id
+            $customer = Mage::getModel('customer/customer')->load($request['customer_id']);
+            if(!is_object($customer) || !$customer->getId()){
+                Mage::throwException('Invalid Customer id specified');
+            }
 
+            //Load quote by quoteid
             /** @var Mage_Sales_Model_Quote $quote */
-            $quote = Mage::getModel('sales/quote')
-                ->setStoreId($request['store_id'])
-                ->load($quoteId);
+            $quote = Mage::getModel('sales/quote')->load($quoteId);
 
-            $customer = Mage::getModel('customer/customer')->load($quote->getCustomerId());
+            /** @var Mage_Checkout_Model_Cart $cart */
+            $cart = Mage::getModel('checkout/cart');
+            $cart->setQuote($quote);
+
+            foreach ($request['product'] as $id => $qty) {
+
+                $params['qty'] = $qty;
+                $product = $this->_initProduct($id, $quote->getStoreId());
+
+                $cart->updateItems();
+
+                $cart->addProduct($product, $params);
+                $cart->getQuote()->setTotalsCollectedFlag(false);
+                $cart->save();
+            }
+
             $response = $this->_buildQuote($quote, $customer);
 
-            return $response;
-
-        } catch (Mage_Core_Exception $e) {
+        }
+        catch (Mage_Core_Exception $e) {
             throw new Mage_Api2_Exception(
                 $e->getMessage(),
                 Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
             );
         }
+
+        return $response;
+
     }
 
     protected function _getFinalPrice($product)
@@ -142,6 +164,25 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
         }
 
         return $price;
+    }
+
+    /**
+     * Initialize product instance from request data
+     *
+     * @return Mage_Catalog_Model_Product || false
+     */
+    protected function _initProduct($productId, $storeId)
+    {
+        //$productId = (int) $this->getRequest()->getParam('product');
+        if ($productId) {
+            $product = Mage::getModel('catalog/product')
+                ->setStoreId($storeId)
+                ->load($productId);
+            if ($product->getId()) {
+                return $product;
+            }
+        }
+        return false;
     }
 
 }

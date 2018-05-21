@@ -201,6 +201,32 @@
                 </routes>
                 <versions>1</versions>
             </customer_address_api2>
+            <customer_wishlist_api2>
+                <group>mobile_app</group>
+                <title>Customer Wishlist</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_customer_wishlist</model>
+                <privileges>
+                    <admin>
+                        <create>1</create>
+                        <retrieve>1</retrieve>
+                        <delete>1</delete>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_collection_customer_wishlist>
+                        <route>/wishlist/:customer_id</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_customer_wishlist>
+                    <route_entity_customer_wishlist>
+                        <route>/wishlist/:customer_id/product/:product_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_customer_wishlist>
+                </routes>
+                <versions>1</versions>
+            </customer_wishlist_api2>
         </resources>
     </api2>
 </config>
