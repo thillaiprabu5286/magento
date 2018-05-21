@@ -37,12 +37,23 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
 
         try {
 
-            //Custom field
-            if (empty($request['city_id'])) {
-                Mage::throwException('Store ID is not specified');
+            if (empty($request['door_no']) ||
+                empty($request['apt_name']) ||
+                empty($request['landmark'])
+            ) {
+                Mage::throwException('Address field missing');
             }
 
+            //Merge Extra Address fields
+            $ext = array (
+                $request['door_no'],
+                $request['apt_name'],
+                $request['landmark'],
+            );
+
             $address->setData($request);
+            $address->setStreet($ext);
+
             $address->setCustomer($customer);
             if (isset($requestData['is_default'])) {
                 $address->setIsDefaultBilling($request['is_default']);
