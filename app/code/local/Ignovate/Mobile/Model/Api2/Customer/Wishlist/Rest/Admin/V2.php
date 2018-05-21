@@ -24,6 +24,7 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
      */
     protected function _create(array $data)
     {
+        $debug = true;
         $customerId = (int)$this->getRequest()->getParam('customer_id');
         $storeId = (int)$this->getRequest()->getParam('store_id');
 
@@ -36,23 +37,11 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
             if (!$product->getId() || !$product->isVisibleInCatalog()) {
                 $this->_critical(self::RESOURCE_NOT_FOUND);
             }
+
+            /** @var Mage_Wishlist_Model_Wishlist $wishlist */
             $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($customerId, true);
-            $newWishlist = false;
-            // save wishlist if it is new
-            if (null === $wishlist->getId()) {
-                $newWishlist = true;
-                $wishlist->save();
-            }
-            // check existance of product in customer wishlist
-            $isValid = true;
-            if (!$newWishlist) {
-                foreach ($wishlist->getItemCollection() as $item) {
-                    if ($item->getProductId() == $product->getId()) {
-                        $this->_critical('product exist in wishlist');
-                        break;
-                    }
-                }
-            }
+            $wishlist->save();
+
             $item = Mage::getModel('wishlist/item');
             $item->setProductId($product->getId())
                 ->setWishlistId($wishlist->getId())
@@ -78,8 +67,10 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
      */
     protected function _delete()
     {
+        $debug = true;
         $customerId = $this->getRequest()->getParam('customer_id');
         $productId     = (int)$this->getRequest()->getParam('product_id');
+        $storeId     = (int)$this->getRequest()->getParam('store_id');
 
         $response = array();
         try {
@@ -87,8 +78,12 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
             $wishlist = Mage::getModel('wishlist/wishlist')
                 ->loadByCustomer($customerId);
             if (null !== $wishlist->getId()) {
-                $items = $wishlist->getItemCollection();
-                $item  = $items->getItemByColumnValue('product_id', $productId);
+                /** @var Mage_Wishlist_Model_Resource_Item_Collection $collection */
+                $collection = Mage::getResourceModel('wishlist/item_collection');
+                $collection->addWishlistFilter($wishlist)
+                    ->addStoreFilter($storeId)
+                    ->setVisibilityFilter();
+                $item  = $collection->getItemByColumnValue('product_id', $productId);
                 $product = Mage::getModel('catalog/product')->load($productId);
                 if ($item) {
                     $item->delete();
@@ -131,7 +126,11 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
         $result = array();
         foreach ($collection as $item) {
 
-            $product = $item->getProduct();
+            //Load product by store
+            $product = Mage::getModel('catalog/product')
+                ->setStoreId($storeId)
+                ->load($item->getProductId());
+
             $price = $product->getPrice();
             $specialPrice = $product->getSpecialPrice();
             $result[] = array(

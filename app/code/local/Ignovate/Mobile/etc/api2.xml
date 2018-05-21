@@ -220,7 +220,7 @@
                         <version>2</version>
                     </route_collection_customer_wishlist>
                     <route_entity_customer_wishlist>
-                        <route>/wishlist/:customer_id/product/:product_id</route>
+                        <route>/wishlist/:customer_id/store/:store_id/product/:product_id</route>
                         <action_type>entity</action_type>
                         <version>2</version>
                     </route_entity_customer_wishlist>
