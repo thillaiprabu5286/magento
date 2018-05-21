@@ -67,9 +67,8 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
         }
 
         return array(
-            'status' => 'success',
-            'item_id' => $item->getId(),
-            'message'   => 'Item added success'
+            'status' => "success",
+            'message'   => "Item {$product->getName()} added success"
         );
     }
 
