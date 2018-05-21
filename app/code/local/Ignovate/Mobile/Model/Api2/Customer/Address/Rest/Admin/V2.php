@@ -13,7 +13,6 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
      */
     public function _create($request)
     {
-        $debug = true;
         $consumer = Mage::getModel('oauth/consumer');
         if (empty($request['api_key'])) {
             Mage::throwException('Consumer key is not specified');
@@ -37,6 +36,11 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
         $address = Mage::getModel('customer/address');
 
         try {
+
+            //Custom field
+            if (empty($request['city_id'])) {
+                Mage::throwException('Store ID is not specified');
+            }
 
             $address->setData($request);
             $address->setCustomer($customer);

@@ -7,27 +7,20 @@
  */
 class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resource
 {
-    protected function _buildQuote($quote, $customer)
+    protected function _buildQuote($quote)
     {
         $quoteData = array();
 
         $quoteData = array_merge($quoteData, array(
             'quote_id'                      => $quote->getId(),
             'subtotal'                      => $quote->getShippingAddress()->getSubtotal(),
-            //'base_subtotal'                 => $quote->getShippingAddress()->getBaseSubtotal(),
             'subtotal_with_discount'        => $quote->getShippingAddress()->getSubtotalWithDiscount(),
-            //'base_subtotal_with_discount'   => $quote->getShippingAddress()->getBaseSubtotalWithDiscount(),
             'grand_total'                   => $quote->getShippingAddress()->getGrandTotal(),
-            //'base_grand_total'              => $quote->getShippingAddress()->getBaseGrandTotal(),
             'currency_code'                 => $quote->getQuoteCurrencyCode(),
             'cod_fee'                       => $quote->getShippingAddress()->getCodFee(),
-            //'base_cod_fee'                  => $quote->getShippingAddress()->getBaseCodFee(),
             'shipping_fee'                  => $quote->getShippingAddress()->getShippingAmount(),
-            //'base_shipping_fee'             => $quote->getShippingAddress()->getBaseShippingAmount(),
             'discount_amount'               => $quote->getShippingAddress()->getDiscountAmount(),
-            //'base_discount_amount'          => $quote->getShippingAddress()->getBaseDiscountAmount(),
-            'tax_amount'                    => $quote->getShippingAddress()->getTaxAmount(),
-            //'base_tax_amount'               => $quote->getShippingAddress()->getBaseTaxAmount(),
+            'tax_amount'                    => $quote->getShippingAddress()->getTaxAmount()
         ));
 
         foreach ($quote->getAllVisibleItems() as $item) {
@@ -40,8 +33,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
                 'qty'            => $item->getQty(),
                 'price'          => $item->getPrice(),
                 'base_price'     => $item->getBasePrice(),
-                'row_total'      => $item->getRowTotal(),
-                //'base_row_total' => $item->getBaseRowTotal()
+                'row_total'      => $item->getRowTotal()
             );
             $quoteData['items'][] = $itemData;
         }
@@ -52,6 +44,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
             'customer_email' => $quote->getCustomerEmail()
         );
         $customerAddress = array();
+        $customer = Mage::getModel('customer/customer')->load($quote->getCustomerId());
         foreach ($customer->getAddresses() as $address) {
             $customerAddress[] = $address->toArray();
         }
@@ -99,5 +92,17 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
             );
         }
         return $methods;
+    }
+
+    protected function _getFinalPrice($product)
+    {
+        //Look for special price
+        if ($product->getSpecialPrice() > 0) {
+            $price = $product->getSpecialPrice();
+        } else {
+            $price = $product->getPrice();
+        }
+
+        return $price;
     }
 }

@@ -129,6 +129,8 @@
                     <admin>
                         <create>1</create>
                         <update>1</update>
+                        <retrieve>1</retrieve>
+                        <delete>1</delete>
                     </admin>
                 </privileges>
                 <routes>
@@ -138,10 +140,20 @@
                         <version>2</version>
                     </route_collection_cart_v2>
                     <route_entity_update_cart_v2>
-                        <route>/cart/quote/:quote_id</route>
+                        <route>/addcart/:quote_id</route>
                         <action_type>entity</action_type>
                         <version>2</version>
                     </route_entity_update_cart_v2>
+                    <route_entity_get_cart_v2>
+                        <route>/cart/:quote_id/store/:store_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_get_cart_v2>
+                    <route_entity_delete_cart_v2>
+                        <route>/cart/:quote_id/store/:store_id/product/:item_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_delete_cart_v2>
                 </routes>
                 <versions>1</versions>
             </cart_api2>

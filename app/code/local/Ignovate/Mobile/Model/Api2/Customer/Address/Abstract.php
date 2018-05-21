@@ -34,6 +34,9 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Abstract extends Ignovate_Api2
     {
         $address = Mage::getModel('customer/address')->load($id);
 
+        //Add extra fields
+        $address['city_id'] = $address->getCityId();
+
         // Throw error if delete flag is on
         if (!$address->getId()) {
             $this->_critical(self::RESOURCE_NOT_FOUND);

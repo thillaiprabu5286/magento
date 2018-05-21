@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ignovate_Customer>
+            <version>0.0.1</version>
+        </Ignovate_Customer>
+    </modules>
+    <global>
+        <resources>
+            <ignovate_customer_setup>
+                <setup>
+                    <module>Ignovate_Customer</module>
+                    <class>Mage_Customer_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ignovate_customer_setup>
+            <ignovate_customer_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </ignovate_customer_read>
+            <ignovate_customer_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </ignovate_customer_write>
+        </resources>
+    </global>
+</config>

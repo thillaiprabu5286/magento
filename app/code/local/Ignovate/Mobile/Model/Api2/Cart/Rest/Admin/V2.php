@@ -3,6 +3,33 @@
 class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
     extends Ignovate_Mobile_Model_Api2_Cart_Abstract
 {
+    public function _retrieve()
+    {
+        $quoteId = $this->getRequest()->getParam('quote_id');
+        if (empty($quoteId)) {
+            Mage::throwException('Quote Id is not specified');
+        }
+
+        $storeId = $this->getRequest()->getParam('store_id');
+        if (empty($storeId)) {
+            Mage::throwException('Store Id is not specified');
+        }
+
+        $response = array();
+        try {
+            /** @var Mage_Sales_Model_Quote $quote */
+            $quote = Mage::getModel('sales/quote')
+                ->setStoreId($storeId)
+                ->load($quoteId);
+            $response = $this->_buildQuote($quote);
+
+        } catch (Exception $e) {
+            echo (string)$e->getMessage();
+        }
+
+        return $response;
+    }
+
     public function _create($request)
     {
         // Validate if consumer key is set in request and if it exists
@@ -96,7 +123,6 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
 
     public function _update($request)
     {
-        $debug = true;
         try {
 
             $consumer = Mage::getModel('oauth/consumer');
@@ -114,34 +140,46 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
                 Mage::throwException('Quote is not specified');
             }
 
-            //Load Customer by id
-            $customer = Mage::getModel('customer/customer')->load($request['customer_id']);
-            if(!is_object($customer) || !$customer->getId()){
-                Mage::throwException('Invalid Customer id specified');
+            $storeId = $request['store_id'];
+            if (empty($request['store_id'])) {
+                Mage::throwException('Store Id is not specified');
             }
 
-            //Load quote by quoteid
-            /** @var Mage_Sales_Model_Quote $quote */
-            $quote = Mage::getModel('sales/quote')->load($quoteId);
-
-            /** @var Mage_Checkout_Model_Cart $cart */
-            $cart = Mage::getModel('checkout/cart');
-            $cart->setQuote($quote);
-
-            foreach ($request['product'] as $id => $qty) {
-
-                $params['qty'] = $qty;
-                $product = $this->_initProduct($id, $quote->getStoreId());
-
-                $cart->updateItems();
-
-                $cart->addProduct($product, $params);
-                $cart->getQuote()->setTotalsCollectedFlag(false);
-                $cart->save();
+            $quote = Mage::getModel('sales/quote')->setStoreId($storeId)->load($quoteId);
+            foreach ($request['product'] as $productId => $qty)
+            {
+                //Check item already exists, update jus qty
+                /** @var Mage_Sales_Model_Quote $quote */
+                if ($quote->hasProductId($productId)) {
+                    //Remove Free Product if already exists and create fresh
+                    foreach ($quote->getAllVisibleItems() as $item) {
+                        if ($productId == $item->getProductId()) {
+                            $info = array ('qty' => $qty);
+                            $quote->updateItem(
+                                $item->getId(),
+                                new Varien_Object($info)
+                            );
+                        }
+                    }
+                } else {
+                    $product = Mage::getModel('catalog/product')
+                        ->setStoreId($storeId)
+                        ->load($productId);
+                    /** @var Mage_Sales_Model_Quote_Item $quoteItem */
+                    $quoteItem = Mage::getModel('sales/quote_item');
+                    $quoteItem->setProduct($product);
+                    $quoteItem->setCustomPrice(0.0)
+                        ->setOriginalCustomPrice($this->_getFinalPrice($product))
+                        ->setWeeeTaxApplied('a:0:{}')
+                        ->setStoreId($storeId)
+                        ->setQty($qty);
+                    $quote->addItem($quoteItem);
+                }
             }
+            $quote->collectTotals()->save();
+            $quote->save();
 
-            $response = $this->_buildQuote($quote, $customer);
-
+            $response = $this->_buildQuote($quote);
         }
         catch (Mage_Core_Exception $e) {
             throw new Mage_Api2_Exception(
@@ -151,39 +189,42 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
         }
 
         return $response;
-
     }
 
-    protected function _getFinalPrice($product)
+    public function _delete()
     {
-        //Look for special price
-        if ($product->getSpecialPrice() > 0) {
-            $price = $product->getSpecialPrice();
-        } else {
-            $price = $product->getPrice();
+        $quoteId = $this->getRequest()->getParam('quote_id');
+        if (empty($quoteId)) {
+            Mage::throwException('Quote Id is not specified');
         }
 
-        return $price;
-    }
-
-    /**
-     * Initialize product instance from request data
-     *
-     * @return Mage_Catalog_Model_Product || false
-     */
-    protected function _initProduct($productId, $storeId)
-    {
-        //$productId = (int) $this->getRequest()->getParam('product');
-        if ($productId) {
-            $product = Mage::getModel('catalog/product')
-                ->setStoreId($storeId)
-                ->load($productId);
-            if ($product->getId()) {
-                return $product;
-            }
+        $itemId = $this->getRequest()->getParam('item_id');
+        if (empty($quoteId)) {
+            Mage::throwException('Item Id is not specified');
         }
-        return false;
-    }
 
+        $storeId = $this->getRequest()->getParam('store_id');
+        if (empty($quoteId)) {
+            Mage::throwException('Store Id is not specified');
+        }
+
+        try {
+            /** @var Mage_Sales_Model_Quote $quote */
+            $quote = Mage::getModel('sales/quote')->setStoreId($storeId)->load($quoteId);
+            $quote->removeItem($itemId);
+            $quote->collectTotals()->save();
+            $quote->save();
+            $this->_successMessage(
+                'Item removed from cart',
+                Mage_Api2_Model_Server::HTTP_OK
+            );
+
+        } catch (Exception $e) {
+            throw new Mage_Api2_Exception(
+                $e->getMessage(),
+                Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
+            );
+        }
+    }
 }
 
