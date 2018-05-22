@@ -8,8 +8,9 @@ class Ignovate_Sales_Model_Observer
         $order = $observer->getOrder();
         if($order->getState() == Mage_Sales_Model_Order::STATE_COMPLETE){
             // send sms
-            $helper = Mage::helper('ignovate_sms');
-            $helper->sendSms($order, 'OrderClosure');
+            /** @var Ignovate_Sms_Helper_Fcm $helper */
+            $helper = Mage::helper('ignovate_sms/fcm');
+            $helper->sendSms($order);
         }
 
         return $this;
