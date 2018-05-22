@@ -23,13 +23,4 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Abstract extends Ignovate_Api
         }
         return $customer;
     }
-
-    protected function getAdapter()
-    {
-        $readAdapter = Mage::getSingleton('core/resource')
-            ->getConnection('core_read');
-
-        return $readAdapter;
-
-    }
 }

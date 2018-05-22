@@ -23,7 +23,7 @@
                 </privileges>
                 <routes>
                     <route_collection_store_products_v2>
-                        <route>/products/store/:store</route>
+                        <route>/products/store/:store/customer/:customer_id</route>
                         <action_type>collection</action_type>
                         <version>2</version>
                     </route_collection_store_products_v2>
@@ -45,7 +45,7 @@
                 </privileges>
                 <routes>
                     <route_collection_store_category_products_v2>
-                        <route>/products/category/:category/store/:store</route>
+                        <route>/products/category/:category/store/:store/customer/:customer_id</route>
                         <action_type>collection</action_type>
                         <version>2</version>
                     </route_collection_store_category_products_v2>

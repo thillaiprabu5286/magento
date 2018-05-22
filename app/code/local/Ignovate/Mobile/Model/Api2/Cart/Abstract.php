@@ -23,19 +23,52 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
             'tax_amount'                    => $quote->getShippingAddress()->getTaxAmount()
         ));
 
+        $productIds = array();
         foreach ($quote->getAllVisibleItems() as $item) {
+            $productIds[] = $item->getProductId();
+        }
 
-            $itemData = array(
-                'item_id'        => $item->getItemId(),
-                'product_id'     => $item->getProductId(),
-                'product_sku'    => $item->getSku(),
-                'product_name'   => $item->getName(),
-                'qty'            => $item->getQty(),
-                'price'          => $item->getPrice(),
-                'base_price'     => $item->getBasePrice(),
-                'row_total'      => $item->getRowTotal()
+        //Build product response with wishlist
+        $collectionSelect = $this->getAdapter()->select()
+            ->from(
+                array('product' => 'catalog_product_flat_' . $quote->getStoreId()),
+                array(
+                    'product_id'        => 'product.entity_id',
+                    'name'              => 'product.name',
+                    'thumbnail'         => 'product.thumbnail',
+                    'small_image'       => 'product.small_image',
+                    'url_path'          => 'product.url_path',
+                    'url_key'           => 'product.url_key',
+                    'sku'               => 'product.sku',
+                    'price'             => 'product.price',
+                    'special_price'     => 'product.special_price'
+                )
             );
-            $quoteData['items'][] = $itemData;
+
+        $collectionSelect->joinLeft(
+            array ('cat' => 'catalog_category_product'),
+            'cat.product_id = product.entity_id'
+        );
+
+        $collectionSelect->where(
+            'product.entity_id IN (?)', $productIds
+        );
+        
+        $indexData = $this->getAdapter()->query($collectionSelect)->fetchAll();
+        foreach ($indexData as $key => $data) {
+            $id = $data['product_id'];
+            $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($quote->getCustomerId(), true);
+            $collection = Mage::getModel('wishlist/item')->getCollection()
+                ->addFieldToFilter('store_id', $quote->getStoreId())
+                ->addFieldToFilter('wishlist_id', $wishlist->getId())
+                ->addFieldToFilter('product_id', $id);
+            $item = $collection->getFirstItem();
+            $isWishlist = 0;
+            if ($item->getId()) {
+                $isWishlist = 1;
+            }
+            $data['is_wishlist'] = $isWishlist;
+            $quoteData['items'][] = $data;
         }
 
         // Add address info into quote data

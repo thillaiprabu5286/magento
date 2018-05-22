@@ -40,7 +40,24 @@ class Ignovate_Mobile_Model_Api2_Navigation_Rest_Admin_V2
 
         $indexData = $readAdapter->query($collectionSelect)->fetchAll();
 
-        return $indexData;
+        $final = array();
+        foreach ($indexData as $key => $data) {
+            $id = $data['product_id'];
+            $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($customerId, true);
+            $collection = Mage::getModel('wishlist/item')->getCollection()
+                ->addFieldToFilter('store_id', $storeId)
+                ->addFieldToFilter('wishlist_id', $wishlist->getId())
+                ->addFieldToFilter('product_id', $id);
+            $item = $collection->getFirstItem();
+            $isWishlist = 0;
+            if ($item->getId()) {
+                $isWishlist = 1;
+            }
+            $data['is_wishlist'] = $isWishlist;
 
+            $final[] = $data;
+        }
+
+        return $final;
     }
 }

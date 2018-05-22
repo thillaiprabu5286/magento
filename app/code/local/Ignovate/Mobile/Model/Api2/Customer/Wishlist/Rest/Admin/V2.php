@@ -154,8 +154,14 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
         $str = (string)$collectionSelect;
 
         $indexData = $this->getAdapter()->query($collectionSelect)->fetchAll();
+        $final = array();
+        //Dummy flag to maintain structure
+        foreach ($indexData as $key => $data) {
+            $data['is_wishlist'] = 1;
+            $final[] = $data;
+        }
 
-        return $indexData;
+        return $final;
     }
 
 }

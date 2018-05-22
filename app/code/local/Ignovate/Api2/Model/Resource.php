@@ -260,4 +260,13 @@ class Ignovate_Api2_Model_Resource extends Mage_Api2_Model_Resource
 
         return $helper->filterSource($obj);
     }
+
+    protected function getAdapter()
+    {
+        $readAdapter = Mage::getSingleton('core/resource')
+            ->getConnection('core_read');
+
+        return $readAdapter;
+
+    }
 }

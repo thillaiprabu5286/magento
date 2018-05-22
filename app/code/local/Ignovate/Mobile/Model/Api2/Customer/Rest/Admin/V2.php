@@ -48,6 +48,7 @@ class Ignovate_Mobile_Model_Api2_Customer_Rest_Admin_V2
                 $newCustomer->setEmail($email);
                 $newCustomer->setPassword($request['key']);
                 $newCustomer->setPasswordConfirmation($request['key']);
+                $newCustomer->setFcmId($request['fcm_id']);
 
                 // NOTE: preset of first and last name is temporal
                 if (empty($request['name'])) {
