@@ -109,7 +109,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
                 ->setSubtotalWithDiscount($subtotal_with_discount);
             $quote->save();
 
-            $response = $this->_buildQuote($quote, $customer);
+            $response = $this->_buildQuote($quote);
 
             return $response;
 
