@@ -5,6 +5,8 @@ class Ignovate_Mobile_Model_Api2_Navigation_Rest_Admin_V2
 {
     public function _retrieveCollection()
     {
+        $customerId = $this->getRequest()->getParam('customer_id');
+
         $storeCode = $this->getRequest()->getParam('store');
         $storeId = Mage::app()->getStore($storeCode)->getId();
 
