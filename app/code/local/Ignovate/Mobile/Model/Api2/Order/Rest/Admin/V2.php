@@ -167,53 +167,38 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
         //Build Order item details
         $productIds = array();
         foreach ($order->getAllVisibleItems() as $item) {
+
             if ($item->getProductType() == 'configurable') {
                 continue;
             }
-            $productIds[] = $item->getProductId();
-        }
-        $readAdapter = Mage::getSingleton('core/resource')
-            ->getConnection('core_read');
-        $collectionSelect = $readAdapter->select()
-            ->from(
-                array('product' => 'catalog_product_flat_' . $order->getStoreId()),
-                array(
-                    'product_id'        => 'product.entity_id',
-                    'name'              => 'product.name',
-                    'thumbnail'         => 'product.thumbnail',
-                    'small_image'       => 'product.small_image',
-                    'url_path'          => 'product.url_path',
-                    'url_key'           => 'product.url_key',
-                    'sku'               => 'product.sku',
-                    'price'             => 'product.price',
-                    'special_price'     => 'product.special_price'
-                )
+
+            $product = Mage::getModel('catalog/product')->load($item->getProductId());
+            $itemData = array(
+                'item_id'        => $item->getItemId(),
+                'product_id'     => $item->getProductId(),
+                'product_sku'    => $item->getSku(),
+                'product_name'   => $item->getName(),
+                'qty'            => $item->getQty(),
+                'price'          => $item->getPrice(),
+                'base_price'     => $item->getBasePrice(),
+                'row_total'      => $item->getRowTotal(),
+                'thumbnail'      => $product->getThumbnail(),
+                'small_image'    => $product->getSmallImage()
             );
-        $collectionSelect->joinLeft(
-            array ('cat' => 'catalog_category_product'),
-            'cat.product_id = product.entity_id'
-        );
-        $collectionSelect->where(
-            'product.special_price > 0'
-        );
-        $indexData = $readAdapter->query($collectionSelect)->fetchAll();
-        $final = array();
-        foreach ($indexData as $key => $data) {
-            $id = $data['product_id'];
+
             $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($order->getCustomerId(), true);
             $collection = Mage::getModel('wishlist/item')->getCollection()
                 ->addFieldToFilter('store_id', $order->getStoreId())
                 ->addFieldToFilter('wishlist_id', $wishlist->getId())
-                ->addFieldToFilter('product_id', $id);
+                ->addFieldToFilter('product_id', $item->getProductId());
             $item = $collection->getFirstItem();
             $isWishlist = 0;
             if ($item->getId()) {
                 $isWishlist = 1;
             }
-            $data['is_wishlist'] = $isWishlist;
-            $final[] = $data;
+            $itemData['is_wishlist'] = $isWishlist;
+            $orderData['items'][] = $itemData;
         }
-        $orderData['items'] = $final;
 
         // Order Address details
         $address = $order->getBillingAddress();
