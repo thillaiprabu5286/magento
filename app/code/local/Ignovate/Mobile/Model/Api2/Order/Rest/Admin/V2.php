@@ -180,7 +180,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                 'product_id'     => $item->getProductId(),
                 'product_sku'    => $item->getSku(),
                 'product_name'   => $item->getName(),
-                'qty'            => $item->getQty(),
+                'qty'            => $item->getQtyOrdered(),
                 'price'          => $item->getPrice(),
                 'base_price'     => $item->getBasePrice(),
                 'row_total'      => $item->getRowTotal(),
