@@ -80,6 +80,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Abstract extends Ignovate_Api2_Model_Resou
 
     public function getShippingMethods($isMultiSelect = false)
     {
+        $debug = true;
         $methods = Mage::getSingleton('shipping/config')->getActiveCarriers();
         $options = array();
         foreach($methods as $_code => $_method)

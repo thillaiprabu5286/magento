@@ -43,4 +43,19 @@
             </ignovate_shipping>
         </helpers>
     </global>
+    <default>
+        <carriers>
+            <express>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>ignovate_shipping/carrier_express</model>
+                <name>Fixed</name>
+                <price>50.00</price>
+                <title>Express Delivery</title>
+                <type>O</type>
+                <specificerrmsg>This shipping method is currently unavailable. If you would like to ship using this shipping method, please contact us.</specificerrmsg>
+                <handling_type>F</handling_type>
+            </express>
+        </carriers>
+    </default>
 </config>
