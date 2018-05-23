@@ -175,12 +175,16 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
             }
 
             $product = Mage::getModel('catalog/product')->load($item->getProductId());
+
+            //Remove decimal in qty
+            $qty = floatval($item->getQtyOrdered());
+
             $itemData = array(
                 'item_id'        => $item->getItemId(),
                 'product_id'     => $item->getProductId(),
                 'product_sku'    => $item->getSku(),
                 'product_name'   => $item->getName(),
-                'qty'            => $item->getQtyOrdered(),
+                'qty'            => $qty,
                 'price'          => $item->getPrice(),
                 'base_price'     => $item->getBasePrice(),
                 'row_total'      => $item->getRowTotal(),
