@@ -5,6 +5,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
 {
     public function _create($request)
     {
+        $debug = true;
         // Validate if consumer key is set in request and if it exists
         $consumer = Mage::getModel('oauth/consumer');
         if (empty($request['api_key'])) {
@@ -149,6 +150,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     protected function _buildOrderData($order)
     {
+        $debug = true;
         $orderData = array (
             'order_number' => $order->getIncrementId(),
             'grand_total' => $order->getGrandTotal(),
@@ -201,6 +203,11 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
         }
 
         // Order Address details
+
+        foreach ($customer->getAddresses() as $address) {
+            $customerAddress[] = $address->toArray();
+        }
+
         $address = $order->getBillingAddress();
         if ($address && $address->getId()) {
             $orderData['billing'] = $address->getData();
