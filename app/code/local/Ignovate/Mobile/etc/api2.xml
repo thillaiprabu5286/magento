@@ -120,6 +120,25 @@
                 </routes>
                 <versions>1</versions>
             </store_api2>
+            <store_quote_api2>
+                <group>mobile_app</group>
+                <title>Store Quote</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_site_quote</model>
+                <privileges>
+                    <admin>
+                        <retrieve>1</retrieve>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_entity_customer_active_quote_v2>
+                        <route>/store/:store_id/customer/:customer_id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </route_entity_customer_active_quote_v2>
+                </routes>
+                <versions>1</versions>
+            </store_quote_api2>
             <cart_api2>
                 <group>mobile_app</group>
                 <title>Cart</title>
