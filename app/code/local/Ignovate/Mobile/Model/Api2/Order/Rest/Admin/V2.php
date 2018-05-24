@@ -35,6 +35,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     public function createOrder($orderData)
     {
+        $debug = true;
         if (!empty($orderData)) {
 
             $this->_initSession($orderData['session']);
@@ -56,6 +57,16 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                 /** @var Ignovate_Sms_Helper_Data $helper */
                 $helper = Mage::helper('ignovate_sms');
                 $helper->sendSms($order, 'NewOrderNew');
+
+                //make quote inactive
+                if ($order->getIncrementId()) {
+                    $quoteId = $orderData['session']['quote_id'];
+                    $storeId = $orderData['session']['store_id'];
+                    /** @var Mage_Sales_Model_Quote $quote */
+                    $quote = Mage::getModel('sales/quote')->setStoreId($storeId)->load($quoteId);
+                    $quote->setIsActive(0)
+                        ->save();
+                }
 
                 $this->_getSession()->clear();
 
