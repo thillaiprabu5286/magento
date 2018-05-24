@@ -161,10 +161,13 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     protected function _buildOrderData($order)
     {
+
+        $date = date('Y-m-d H:i:s', strtotime($order->getCreatedAt(). ' + 330 mins'));
+
         $orderData = array (
             'order_number' => $order->getIncrementId(),
             'grand_total' => $order->getGrandTotal(),
-            'ordered_date' => $order->getCreatedAt(),
+            'ordered_date' => $date,
             'status_label' => Mage::helper('core')->__($order->getStatusLabel()),
             'tax_amount'    => $order->getTaxAmount()
         );
