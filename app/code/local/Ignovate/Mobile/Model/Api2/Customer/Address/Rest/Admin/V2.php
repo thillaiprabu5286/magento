@@ -54,9 +54,10 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
                 $request['landmark'],
                 $request['street_name'],
             );
+            $extra = implode(',', $ext);
 
             $address->setData($request);
-            $address->setStreet($ext);
+            $address->setStreet($extra);
 
             $address->setCustomer($customer);
             if (isset($requestData['is_default'])) {
