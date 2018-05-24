@@ -21,9 +21,12 @@ class Ignovate_Mobile_Model_Api2_Site_Quote_Rest_Admin_V2
 
         $str = (string)$collection->getSelect();
 
-        $data = $collection->getLastItem();
+        if ($collection->getSize() > 0) {
+            $data = $collection->getLastItem();
+            return array ('quote_id' => $data->getEntityId());
+        }
 
-        return array ('quote_id' => $data->getEntityId());
+        return array ('quote_id' => null);
     }
 
 }
