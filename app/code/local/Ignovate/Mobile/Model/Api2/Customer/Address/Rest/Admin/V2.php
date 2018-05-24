@@ -51,9 +51,10 @@ class Ignovate_Mobile_Model_Api2_Customer_Address_Rest_Admin_V2
             $ext = array (
                 $request['door_no'],
                 $request['apt_name'],
-                $request['landmark'],
                 $request['street_name'],
+                $request['landmark']
             );
+            $ext = array_filter($ext);
             $extra = implode(',', $ext);
 
             $address->setData($request);

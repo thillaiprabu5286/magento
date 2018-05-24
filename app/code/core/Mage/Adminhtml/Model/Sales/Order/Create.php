@@ -1308,9 +1308,10 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object implements M
             $ext = array (
                 $data['billing_address']['door_no'],
                 $data['billing_address']['apt_name'],
-                $data['billing_address']['landmark'],
                 $data['billing_address']['street_name'],
+                $data['billing_address']['landmark']
             );
+            $ext = array_filter($ext);
             $extra = implode(',', $ext);
             $data['billing_address']['street'] = $extra;
             $this->setBillingAddress($data['billing_address']);
@@ -1321,9 +1322,10 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object implements M
             $ext = array (
                 $data['shipping_address']['door_no'],
                 $data['shipping_address']['apt_name'],
-                $data['shipping_address']['landmark'],
                 $data['shipping_address']['street_name'],
+                $data['shipping_address']['landmark']
             );
+            $ext = array_filter($ext);
             $extra = implode(',', $ext);
             $data['shipping_address']['street'] = $extra;
             $this->setShippingAddress($data['shipping_address']);
