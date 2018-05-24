@@ -1311,7 +1311,8 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object implements M
                 $data['billing_address']['landmark'],
                 $data['billing_address']['street_name'],
             );
-            $data['billing_address']['street'] = $ext;
+            $extra = implode(',', $ext);
+            $data['billing_address']['street'] = $extra;
             $this->setBillingAddress($data['billing_address']);
         }
 
@@ -1323,7 +1324,8 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object implements M
                 $data['shipping_address']['landmark'],
                 $data['shipping_address']['street_name'],
             );
-            $data['shipping_address']['street'] = $ext;
+            $extra = implode(',', $ext);
+            $data['shipping_address']['street'] = $extra;
             $this->setShippingAddress($data['shipping_address']);
         }
 
