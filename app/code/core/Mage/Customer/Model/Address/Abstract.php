@@ -159,7 +159,7 @@ class Mage_Customer_Model_Address_Abstract extends Mage_Core_Model_Abstract
     public function setStreet($street)
     {
         if (is_array($street)) {
-            $street = trim(implode("\n", $street));
+            $street = trim(implode(",", $street));
         }
         $this->setData('street', $street);
         return $this;

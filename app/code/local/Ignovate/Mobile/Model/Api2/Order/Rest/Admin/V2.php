@@ -150,7 +150,6 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     protected function _buildOrderData($order)
     {
-        $debug = true;
         $orderData = array (
             'order_number' => $order->getIncrementId(),
             'grand_total' => $order->getGrandTotal(),
@@ -215,23 +214,11 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
         $address = $order->getBillingAddress();
         if ($address && $address->getId()) {
             $orderData['billing'] = $address->getData();
-            $orderData['billing']['door_no'] = $address->getDoorNo();
-            $orderData['billing']['apt_name'] = $address->getAptName();
-            $orderData['billing']['landmark'] = $address->getLandmark();
-            $orderData['billing']['street_name'] = $address->getStreetName();
-            $orderData['billing']['cus_email'] = $address->getCusEmail();
-            $orderData['billing']['city_id'] = $address->getCityId();
         }
 
         $address = $order->getShippingAddress();
         if ($address && $address->getId()) {
             $orderData['shipping'] = $address->getData();
-            $orderData['shipping']['door_no'] = $address->getDoorNo();
-            $orderData['shipping']['apt_name'] = $address->getAptName();
-            $orderData['shipping']['landmark'] = $address->getLandmark();
-            $orderData['shipping']['street_name'] = $address->getStreetName();
-            $orderData['shipping']['cus_email'] = $address->getCusEmail();
-            $orderData['shipping']['city_id'] = $address->getCityId();
         }
 
         $orderData['shipping_method'] = array (
