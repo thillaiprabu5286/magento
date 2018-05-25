@@ -26,6 +26,7 @@ class Ignovate_Mobile_Model_Api2_Customer_Orders_Abstract extends Ignovate_Api2_
 
     public function buildCustomerOrderObj($customer, $storeId)
     {
+        $debug = true;
         // Get Customer Log
         $readAdapter = Mage::getSingleton('core/resource')
             ->getConnection('core_read');
@@ -62,6 +63,11 @@ class Ignovate_Mobile_Model_Api2_Customer_Orders_Abstract extends Ignovate_Api2_
             );
 
         $indexData = $readAdapter->query($collectionSelect)->fetchAll();
+
+        foreach ($indexData as $key => $each) {
+            $date = date('Y-m-d H:i:s', strtotime($each['ordered_date']. ' + 330 mins'));
+            $indexData[$key]['ordered_date'] = $date;
+        }
 
         return $indexData;
     }
