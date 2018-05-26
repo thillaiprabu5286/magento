@@ -56,4 +56,27 @@ class Ignovate_Sms_Helper_Data extends Mage_Core_Helper_Abstract
         return $data;
     }
 
+    public function sendWelomeSms($mobile, $template)
+    {
+
+        $data = array (
+            'module'    => 'TRANS_SMS',
+            'apikey'    => $this->_apiKey,
+            'to'    => $mobile,
+            'from'  => $this->_senderId,
+            'templatename' => $template,
+            'var1'  => ''
+        );
+
+        $url = $this->_url . "?" . http_build_query($data);
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $data = curl_exec($ch);
+        curl_close($ch);
+
+        return $data;
+    }
+
 }
