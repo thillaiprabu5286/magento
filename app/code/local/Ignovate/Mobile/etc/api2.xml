@@ -263,6 +263,25 @@
                 </routes>
                 <versions>1</versions>
             </customer_wishlist_api2>
+            <querysearch_api2>
+                <group>mobile_app</group>
+                <title>Search</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_querysearch</model>
+                <privileges>
+                    <admin>
+                        <create>1</create>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_collection_search>
+                        <route>/querysearch</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_search>
+                </routes>
+                <versions>1</versions>
+            </querysearch_api2>
         </resources>
     </api2>
 </config>
