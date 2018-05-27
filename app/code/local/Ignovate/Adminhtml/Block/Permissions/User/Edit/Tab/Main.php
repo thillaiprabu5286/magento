@@ -36,6 +36,7 @@ class Ignovate_Adminhtml_Block_Permissions_User_Edit_Tab_Main extends Mage_Admin
 {
     protected function _prepareForm()
     {
+        $debug = true;
         $model = Mage::registry('permissions_user');
 
         $form = new Varien_Data_Form();
@@ -48,19 +49,29 @@ class Ignovate_Adminhtml_Block_Permissions_User_Edit_Tab_Main extends Mage_Admin
             $fieldset->addField('user_id', 'hidden', array(
                 'name' => 'user_id',
             ));
+
+            $fieldset->addField('username', 'text', array(
+                'name'  => 'username',
+                'label' => Mage::helper('adminhtml')->__('User Name'),
+                'id'    => 'username',
+                'title' => Mage::helper('adminhtml')->__('User Name'),
+                'required' => true,
+                'disabled' => true
+            ));
+
         } else {
             if (! $model->hasData('is_active')) {
                 $model->setIsActive(1);
             }
-        }
 
-        $fieldset->addField('username', 'text', array(
-            'name'  => 'username',
-            'label' => Mage::helper('adminhtml')->__('User Name'),
-            'id'    => 'username',
-            'title' => Mage::helper('adminhtml')->__('User Name'),
-            'required' => true,
-        ));
+            $fieldset->addField('username', 'text', array(
+                'name'  => 'username',
+                'label' => Mage::helper('adminhtml')->__('User Name'),
+                'id'    => 'username',
+                'title' => Mage::helper('adminhtml')->__('User Name'),
+                'required' => true
+            ));
+        }
 
         $fieldset->addField('firstname', 'text', array(
             'name'  => 'firstname',
