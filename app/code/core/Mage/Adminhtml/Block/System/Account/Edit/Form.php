@@ -50,6 +50,7 @@ class Mage_Adminhtml_Block_System_Account_Edit_Form extends Mage_Adminhtml_Block
                 'label' => Mage::helper('adminhtml')->__('User Name'),
                 'title' => Mage::helper('adminhtml')->__('User Name'),
                 'required' => true,
+                'disabled' => true
             )
         );
 
