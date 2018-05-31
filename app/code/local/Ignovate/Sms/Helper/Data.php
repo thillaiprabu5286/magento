@@ -65,7 +65,7 @@ class Ignovate_Sms_Helper_Data extends Mage_Core_Helper_Abstract
             'to'    => $mobile,
             'from'  => $this->_senderId,
             'templatename' => $template,
-            'var1'  => ''
+            'var1'  => ' '
         );
 
         $url = $this->_url . "?" . http_build_query($data);
