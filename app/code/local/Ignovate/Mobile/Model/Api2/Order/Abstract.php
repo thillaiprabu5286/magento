@@ -62,4 +62,105 @@ class Ignovate_Mobile_Model_Api2_Order_Abstract extends Ignovate_Api2_Model_Reso
     {
         return Mage::getModel('catalog/product');
     }
+
+    /**
+     * Prepare Order Response Data
+     *
+     * @param $order
+     * @return array
+     */
+    protected function _buildOrderData($order)
+    {
+
+        $date = date('Y-m-d H:i:s', strtotime($order->getCreatedAt(). ' + 330 mins'));
+
+        $orderData = array (
+            'order_number' => $order->getIncrementId(),
+            'grand_total' => $order->getGrandTotal(),
+            'ordered_date' => $date,
+            'status_label' => Mage::helper('core')->__($order->getStatusLabel()),
+            'tax_amount'    => $order->getTaxAmount()
+        );
+
+        $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
+        $orderData['customer'] = array (
+            'customer_id' => $customer->getId(),
+            'customer_email' => $customer->getEmail(),
+            'name'  => $customer->getFirstname() . ' ' . $customer->getLastname()
+        );
+
+        //Build Order item details
+        $productIds = array();
+        foreach ($order->getAllVisibleItems() as $item) {
+
+            if ($item->getProductType() == 'configurable') {
+                continue;
+            }
+
+            $product = Mage::getModel('catalog/product')->load($item->getProductId());
+
+            //Remove decimal in qty
+            $qty = floatval($item->getQtyOrdered());
+
+            $itemData = array(
+                'item_id'        => $item->getItemId(),
+                'product_id'     => $item->getProductId(),
+                'product_sku'    => $item->getSku(),
+                'product_name'   => $item->getName(),
+                'qty'            => $qty,
+                'price'          => $item->getPrice(),
+                'base_price'     => $item->getBasePrice(),
+                'row_total'      => $item->getRowTotal(),
+                'thumbnail'      => $product->getThumbnail(),
+                'small_image'    => $product->getSmallImage()
+            );
+
+            $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($order->getCustomerId(), true);
+            $collection = Mage::getModel('wishlist/item')->getCollection()
+                ->addFieldToFilter('store_id', $order->getStoreId())
+                ->addFieldToFilter('wishlist_id', $wishlist->getId())
+                ->addFieldToFilter('product_id', $item->getProductId());
+            $item = $collection->getFirstItem();
+            $isWishlist = 0;
+            if ($item->getId()) {
+                $isWishlist = 1;
+            }
+            $itemData['is_wishlist'] = $isWishlist;
+            $orderData['items'][] = $itemData;
+        }
+
+        // Order Address details
+
+        foreach ($customer->getAddresses() as $address) {
+            $customerAddress[] = $address->toArray();
+        }
+
+        $address = $order->getBillingAddress();
+        if ($address && $address->getId()) {
+            $orderData['billing'] = $address->getData();
+        }
+
+        $address = $order->getShippingAddress();
+        if ($address && $address->getId()) {
+            $orderData['shipping'] = $address->getData();
+        }
+
+        $orderData['shipping_method'] = array (
+            'value' => $order->getShippingAmount(),
+            'code' => $order->getShippingMethod(),
+            'label' => $order->getShippingDescription()
+        );
+
+        $payment = $order->getPayment();
+        if ($payment && $payment->getId()) {
+            $method = $payment->getMethod();
+            $paymentTitle = Mage::getStoreConfig('payment/'.$method.'/title');
+            $orderData['payment_method'] = array (
+                'code' => $payment->getMethod(),
+                'label' => $paymentTitle
+            );
+        }
+
+        return $orderData;
+    }
 }

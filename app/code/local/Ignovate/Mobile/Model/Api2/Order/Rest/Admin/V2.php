@@ -1,11 +1,16 @@
 <?php
 
+
 class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
     extends Ignovate_Mobile_Model_Api2_Order_Abstract
 {
-    public function _create($request)
+    public function _create(array $request)
     {
         $debug = true;
+        if (empty($request)) {
+            $this->_critical(Ignovate_Api2_Model_Resource::RESOURCE_REQUEST_DATA_INVALID);
+        }
+
         // Validate if consumer key is set in request and if it exists
         $consumer = Mage::getModel('oauth/consumer');
         if (empty($request['api_key'])) {
@@ -16,16 +21,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
             Mage::throwException('Consumer key is incorrect');
         }
 
-        try {
-
-            $this->createOrder($request);
-
-        } catch (Mage_Core_Exception $e) {
-            throw new Mage_Api2_Exception(
-                $e->getMessage(),
-                Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR
-            );
-        }
+        $this->createOrder($request);
     }
 
     /**
@@ -35,15 +31,12 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     public function createOrder($orderData)
     {
-        $debug = true;
         if (!empty($orderData)) {
 
             $this->_initSession($orderData['session']);
 
             try {
-
                 $this->_processQuote($orderData);
-
                 if (!empty($orderData['payment'])) {
                     $this->_getOrderCreateModel()->setPaymentData($orderData['payment']);
                     $this->_getOrderCreateModel()->getQuote()->getPayment()->addData($orderData['payment']);
@@ -53,35 +46,19 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                     ->importPostData($orderData['order'])
                     ->createOrder();
 
-                //Send sms after order creation
-                /** @var Ignovate_Sms_Helper_Data $helper */
-                $helper = Mage::helper('ignovate_sms');
-                $helper->sendSms($order, 'NewOrderNew');
-
-                //make quote inactive
-                if ($order->getIncrementId()) {
-                    $quoteId = $orderData['session']['quote_id'];
-                    $storeId = $orderData['session']['store_id'];
-                    /** @var Mage_Sales_Model_Quote $quote */
-                    $quote = Mage::getModel('sales/quote')->setStoreId($storeId)->load($quoteId);
-                    $quote->setIsActive(0)
-                        ->save();
-                }
-
                 $this->_getSession()->clear();
 
+                $params = array ('id' => $order->getIncrementId());
                 $this->_successMessage(
-                    'Order successfully created',
+                    'Order Created Successfully',
                     Mage_Api2_Model_Server::HTTP_OK,
-                    array(
-                        'order_id' => $order->getIncrementId(),
-                    )
+                    $params
                 );
-
             } catch (Exception $e){
-
-                $this->_critical($e->getMessage(), Mage_Api2_Model_Server::HTTP_INTERNAL_ERROR);
-
+                $this->_critical(
+                    Ignovate_Api2_Model_Resource::RESOURCE_REQUEST_DATA_INVALID,
+                    Mage_Api2_Model_Server::HTTP_NOT_FOUND
+                );
             }
         }
     }
@@ -94,7 +71,6 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     protected function _processQuote($data = array())
     {
-        $debug = true;
         /* Saving order data */
         if (!empty($data['order'])) {
             $this->_getOrderCreateModel()->importPostData($data['order']);
@@ -106,9 +82,8 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
         /* Add Product */
         if (!empty($data['items'])) {
             $itemArr = array();
-            foreach ($data['items'] as $item) {
-                $productId = $this->_getProduct()->getIdBySku($item['sku']);
-                $itemArr[$productId] = array ('qty' => $item['qty']);
+            foreach ($data['items'] as $productId => $qty) {
+                $itemArr[$productId] = array ('qty' => $qty);
             }
             $this->_getOrderCreateModel()->addProducts($itemArr);
         }
@@ -140,11 +115,8 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
         }
 
         try {
-
             $order = Mage::getModel('sales/order')->load($orderId);
-
             return $this->_buildOrderData($order);
-
         } catch (Exception $e) {
             throw new Mage_Api2_Exception(
                 $e->getMessage(),
@@ -152,106 +124,4 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
             );
         }
     }
-
-    /**
-     * Prepare Order Response Data
-     *
-     * @param $order
-     * @return array
-     */
-    protected function _buildOrderData($order)
-    {
-
-        $date = date('Y-m-d H:i:s', strtotime($order->getCreatedAt(). ' + 330 mins'));
-
-        $orderData = array (
-            'order_number' => $order->getIncrementId(),
-            'grand_total' => $order->getGrandTotal(),
-            'ordered_date' => $date,
-            'status_label' => Mage::helper('core')->__($order->getStatusLabel()),
-            'tax_amount'    => $order->getTaxAmount()
-        );
-
-        $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
-        $orderData['customer'] = array (
-            'customer_id' => $customer->getId(),
-            'customer_email' => $customer->getEmail(),
-            'name'  => $customer->getFirstname() . ' ' . $customer->getLastname()
-        );
-
-        //Build Order item details
-        $productIds = array();
-        foreach ($order->getAllVisibleItems() as $item) {
-
-            if ($item->getProductType() == 'configurable') {
-                continue;
-            }
-
-            $product = Mage::getModel('catalog/product')->load($item->getProductId());
-
-            //Remove decimal in qty
-            $qty = floatval($item->getQtyOrdered());
-
-            $itemData = array(
-                'item_id'        => $item->getItemId(),
-                'product_id'     => $item->getProductId(),
-                'product_sku'    => $item->getSku(),
-                'product_name'   => $item->getName(),
-                'qty'            => $qty,
-                'price'          => $item->getPrice(),
-                'base_price'     => $item->getBasePrice(),
-                'row_total'      => $item->getRowTotal(),
-                'thumbnail'      => $product->getThumbnail(),
-                'small_image'    => $product->getSmallImage()
-            );
-
-            $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($order->getCustomerId(), true);
-            $collection = Mage::getModel('wishlist/item')->getCollection()
-                ->addFieldToFilter('store_id', $order->getStoreId())
-                ->addFieldToFilter('wishlist_id', $wishlist->getId())
-                ->addFieldToFilter('product_id', $item->getProductId());
-            $item = $collection->getFirstItem();
-            $isWishlist = 0;
-            if ($item->getId()) {
-                $isWishlist = 1;
-            }
-            $itemData['is_wishlist'] = $isWishlist;
-            $orderData['items'][] = $itemData;
-        }
-
-        // Order Address details
-
-        foreach ($customer->getAddresses() as $address) {
-            $customerAddress[] = $address->toArray();
-        }
-
-        $address = $order->getBillingAddress();
-        if ($address && $address->getId()) {
-            $orderData['billing'] = $address->getData();
-        }
-
-        $address = $order->getShippingAddress();
-        if ($address && $address->getId()) {
-            $orderData['shipping'] = $address->getData();
-        }
-
-        $orderData['shipping_method'] = array (
-            'value' => $order->getShippingAmount(),
-            'code' => $order->getShippingMethod(),
-            'label' => $order->getShippingDescription()
-        );
-
-        $payment = $order->getPayment();
-        if ($payment && $payment->getId()) {
-            $method = $payment->getMethod();
-            $paymentTitle = Mage::getStoreConfig('payment/'.$method.'/title');
-            $orderData['payment_method'] = array (
-                'code' => $payment->getMethod(),
-                'label' => $paymentTitle
-            );
-        }
-
-        return $orderData;
-    }
 }
-
