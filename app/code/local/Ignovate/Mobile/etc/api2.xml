@@ -282,6 +282,25 @@
                 </routes>
                 <versions>1</versions>
             </querysearch_api2>
+            <homescreen_api2>
+                <group>mobile_app</group>
+                <title>Homescreen</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_mobile/api2_homescreen</model>
+                <privileges>
+                    <admin>
+                        <retrieve>1</retrieve>
+                    </admin>
+                </privileges>
+                <routes>
+                    <route_collection_homescreen>
+                        <route>/homescreen/store/:store/limit/:limit</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </route_collection_homescreen>
+                </routes>
+                <versions>1</versions>
+            </homescreen_api2>
         </resources>
     </api2>
 </config>
