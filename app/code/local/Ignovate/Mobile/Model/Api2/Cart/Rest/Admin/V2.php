@@ -60,6 +60,7 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
             Mage::throwException('No item specified');
         }
 
+        $debug = true;
         try {
             /** @var Mage_Checkout_Model_Cart $cart */
             $cart = Mage::getSingleton('checkout/cart');
@@ -69,6 +70,17 @@ class Ignovate_Mobile_Model_Api2_Cart_Rest_Admin_V2
                 $product = Mage::getModel('catalog/product')
                     ->setStoreId($request['store_id'])
                     ->load($productId);
+
+                //For only decimal , calculate dynamic prices
+                if ($qty < 1) {
+                    $price = $product->getPrice();
+                    $product->setPrice($price * $qty);
+                    if ($product->getSpecialPrice() > 0) {
+                        $splPrice = $product->getSpecialPrice();
+                        $product->setSpecialPrice($splPrice * $qty);
+                    }
+                }
+
                 $cart->addProduct($product, array('qty' => $qty));
             }
             $cart->save();
