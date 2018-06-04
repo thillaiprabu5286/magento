@@ -138,7 +138,9 @@ class Ignovate_Mobile_Model_Api2_Customer_Wishlist_Rest_Admin_V2
                     'url_key'           => 'product.url_key',
                     'sku'               => 'product.sku',
                     'price'             => 'product.price',
-                    'special_price'     => 'product.special_price'
+                    'special_price'     => 'product.special_price',
+                    'units' => 'product.units',
+                    'package' => 'product.package'
                 )
             );
 
