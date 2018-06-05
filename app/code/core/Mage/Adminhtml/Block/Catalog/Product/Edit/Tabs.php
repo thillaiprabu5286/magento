@@ -99,30 +99,6 @@ class Mage_Adminhtml_Block_Catalog_Product_Edit_Tabs extends Mage_Adminhtml_Bloc
                 ));
             }
 
-            $this->addTab('categories', array(
-                'label'     => Mage::helper('catalog')->__('Categories'),
-                'url'       => $this->getUrl('*/*/categories', array('_current' => true)),
-                'class'     => 'ajax',
-            ));
-
-            $this->addTab('related', array(
-                'label'     => Mage::helper('catalog')->__('Related Products'),
-                'url'       => $this->getUrl('*/*/related', array('_current' => true)),
-                'class'     => 'ajax',
-            ));
-
-            $this->addTab('upsell', array(
-                'label'     => Mage::helper('catalog')->__('Up-sells'),
-                'url'       => $this->getUrl('*/*/upsell', array('_current' => true)),
-                'class'     => 'ajax',
-            ));
-
-            $this->addTab('crosssell', array(
-                'label'     => Mage::helper('catalog')->__('Cross-sells'),
-                'url'       => $this->getUrl('*/*/crosssell', array('_current' => true)),
-                'class'     => 'ajax',
-            ));
-
             $storeId = 0;
             if ($this->getRequest()->getParam('store')) {
                 $storeId = Mage::app()->getStore($this->getRequest()->getParam('store'))->getId();

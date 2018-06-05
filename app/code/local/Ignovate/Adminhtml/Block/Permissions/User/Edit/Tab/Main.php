@@ -46,6 +46,7 @@ class Ignovate_Adminhtml_Block_Permissions_User_Edit_Tab_Main extends Mage_Admin
         $fieldset = $form->addFieldset('base_fieldset', array('legend'=>Mage::helper('adminhtml')->__('Account Information')));
 
         if ($model->getUserId()) {
+
             $fieldset->addField('user_id', 'hidden', array(
                 'name' => 'user_id',
             ));
@@ -56,7 +57,7 @@ class Ignovate_Adminhtml_Block_Permissions_User_Edit_Tab_Main extends Mage_Admin
                 'id'    => 'username',
                 'title' => Mage::helper('adminhtml')->__('User Name'),
                 'required' => true,
-                'disabled' => true
+                'readonly'  => true
             ));
 
         } else {
