@@ -53,13 +53,13 @@
                 <model>ignovate_driver/api2_order</model>
                 <privileges>
                     <admin>
-                        <update>1</update>
+                        <create>1</create>
                     </admin>
                 </privileges>
                 <routes>
                     <order_status_update>
                         <route>/driver/:driver_id/order/:order_id</route>
-                        <action_type>entity</action_type>
+                        <action_type>collection</action_type>
                         <version>2</version>
                     </order_status_update>
                 </routes>

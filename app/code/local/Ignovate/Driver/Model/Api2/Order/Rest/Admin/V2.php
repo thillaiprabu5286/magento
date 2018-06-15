@@ -11,7 +11,7 @@ class Ignovate_Driver_Model_Api2_Order_Rest_Admin_V2
      * @throws Exception
      * @throws Mage_Api2_Exception
      */
-    public function _update(array $params)
+    public function _create(array $params)
     {
         $order = $this->_loadOrderById(
             $this->getRequest()->getParam('order_id')
