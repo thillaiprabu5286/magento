@@ -46,25 +46,25 @@
                 </routes>
                 <versions>1</versions>
             </home_api2>
-            <drive_order_update_api2 translate="title" module="ignovate_driver">
+            <order_status_api2 translate="title" module="ignovate_driver">
                 <group>driver_app</group>
                 <title>Order Status</title>
                 <sort_order>1</sort_order>
                 <model>ignovate_driver/api2_order</model>
                 <privileges>
                     <admin>
-                        <create>1</create>
+                        <update>1</update>
                     </admin>
                 </privileges>
                 <routes>
                     <order_status_update>
-                        <route>/driver/:driver_id/order/:order_id</route>
-                        <action_type>collection</action_type>
+                        <route>/order/status/:id</route>
+                        <action_type>entity</action_type>
                         <version>2</version>
                     </order_status_update>
                 </routes>
                 <versions>1</versions>
-            </drive_order_update_api2>
+            </order_status_api2>
         </resources>
     </api2>
 </config>
