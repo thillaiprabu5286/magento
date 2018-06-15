@@ -12,4 +12,14 @@ class Ignovate_Driver_Model_Resource_Driver_Collection extends Mage_Core_Model_M
     {
         $this->_init('ignovate_driver/driver');
     }
+
+    public function toOptionDriver($valueField='id', $labelField='name')
+    {
+        $debug = true;
+        $res = array();
+        foreach ($this as $item) {
+            $res[$item->getData($valueField)] = $item->getData($labelField);
+        }
+        return $res;
+    }
 }

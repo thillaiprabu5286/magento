@@ -37,7 +37,7 @@ class Ignovate_Sales_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_Wid
             and baddress.address_type = 'shipping'",
             array('telephone' => 'baddress.telephone')
         );
-
+        
         //Filter order by associated user stores
         $userId = Mage::getSingleton('admin/session')->getUser()->getUserId();
         $userStores = Mage::getResourceModel('ignovate_adminhtml/userStore')->loadStores($userId);
@@ -92,6 +92,16 @@ class Ignovate_Sales_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_Wid
             'header' => Mage::helper('sales')->__('Mobile'),
             'index' => 'telephone',
             'filter_condition_callback' => array($this, '_filterMobile')
+        ));
+
+        $driver = Mage::getResourceModel('ignovate_driver/driver_collection')
+            ->load()
+            ->toOptionDriver();
+        $this->addColumn('driver', array(
+            'header' => Mage::helper('sales')->__('Driver'),
+            'type'      =>  'options',
+            'options'   =>  $driver,
+            'index' => 'driver'
         ));
 
         $this->addColumn('base_grand_total', array(
