@@ -53,10 +53,12 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                 $order->setIsApp($orderData['order']['is_app'])->save();
 
                 //Delete Quote
-                $quote = Mage::getModel("sales/quote")
-                    ->setStoreId($orderData['session']['store_id'])
-                    ->load($orderData['quote_id']);
-                $quote->delete();
+                if ($order->getIncrementId()) {
+                    $quote = Mage::getModel("sales/quote")
+                        ->setStoreId($orderData['session']['store_id'])
+                        ->load($orderData['quote_id']);
+                    $quote->delete();
+                }
 
                 $params = array ('id' => $order->getIncrementId());
                 $this->_successMessage(
