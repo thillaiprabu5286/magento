@@ -95,6 +95,24 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Edit_Form extends Mage_Adminhtml_Bl
             ),
         ));
 
+        if (!Mage::app()->isSingleStoreMode()) {
+            $field = $fieldset->addField('store_id', 'select', array(
+                'name'      => 'stores[]',
+                'label'     => Mage::helper('adminhtml')->__('Store View'),
+                'title'     => Mage::helper('adminhtml')->__('Store View'),
+                'values'    => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true),
+            ));
+            $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');
+            $field->setRenderer($renderer);
+        }
+        else {
+            $fieldset->addField('store_id', 'hidden', array(
+                'name'      => 'stores[]',
+                'value'     => Mage::app()->getStore(true)->getId()
+            ));
+            $driver->setStoreId(Mage::app()->getStore(true)->getId());
+        }
+
         if ($driver && $driver->getId()) {
             $form->setValues($driver->getData());
             $form->setDataObject($driver);

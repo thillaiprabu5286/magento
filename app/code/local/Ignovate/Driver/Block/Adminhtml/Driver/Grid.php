@@ -103,6 +103,19 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Grid extends Mage_Adminhtml_Block_W
             ),
         ));
 
+        if (!Mage::app()->isSingleStoreMode()) {
+            $this->addColumn('store_id', array(
+                'header'        => Mage::helper('cms')->__('Store View'),
+                'index'         => 'store_id',
+                'type'          => 'store',
+                'store_all'     => true,
+                'store_view'    => true,
+                'sortable'      => false,
+                'filter_condition_callback'
+                => array($this, '_filterStoreCondition'),
+            ));
+        }
+
         $this->addColumn('action',
             array(
                 'header'    =>  $helper->__('Action'),

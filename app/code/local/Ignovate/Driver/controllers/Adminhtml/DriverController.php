@@ -23,6 +23,11 @@ class Ignovate_Driver_Adminhtml_DriverController extends Mage_Adminhtml_Controll
 
             $data = $this->getRequest()->getParams();
 
+            $storeId = array_shift($data['stores']);
+            if ($storeId) {
+                $driver->setStoreId($storeId);
+            }
+
             $maxsize    = 2097152;
 
             if(isset($_FILES['file_aadhaar']['name'])
