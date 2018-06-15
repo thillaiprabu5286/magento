@@ -50,13 +50,13 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                 $this->_getSession()->clear();
 
                 //Save Order again with is app flag
-                $order->setIsApp($orderData['order']['is_app'])
-                    ->save();
+                $order->setIsApp($orderData['order']['is_app'])->save();
 
                 //Delete Quote
-                //$quote = Mage::getModel("sales/quote")->load($orderData['quote_id']);
-                //$quote->setIsActive(false);
-                //$quote->delete();
+                $quote = Mage::getModel("sales/quote")
+                    ->setStoreId($orderData['session']['store_id'])
+                    ->load($orderData['quote_id']);
+                $quote->delete();
 
                 $params = array ('id' => $order->getIncrementId());
                 $this->_successMessage(
