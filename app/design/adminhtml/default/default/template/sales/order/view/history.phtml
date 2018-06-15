@@ -36,6 +36,9 @@
             <?php endforeach; ?>
             </select>
         </span>
+
+        <?php $status = $this->getOrder()->getStatus() ?>
+        <?php if ($status == 'ready_for_delivery'): ?>
         <span class="field-row">
             <label class="normal" for="history_status"><?php echo Mage::helper('sales')->__('Driver') ?></label><br/>
             <select name="history[driver]" class="select" id="history_driver">
@@ -45,6 +48,7 @@
             <?php endforeach; ?>
             </select>
         </span>
+        <?php endif; ?>
         <span class="field-row">
             <label class="normal" for="history_comment"><?php echo Mage::helper('sales')->__('Comment') ?></label>
             <textarea name="history[comment]" rows="3" cols="5" style="height:6em; width:99%;" id="history_comment"></textarea>
