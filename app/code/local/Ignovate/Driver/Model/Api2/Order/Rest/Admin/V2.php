@@ -14,7 +14,7 @@ class Ignovate_Driver_Model_Api2_Order_Rest_Admin_V2
     public function _update(array $params)
     {
         $order = $this->_loadOrderById(
-            $this->getRequest()->getParam('id')
+            $this->getRequest()->getParam('order_id')
         );
 
         if (empty($this->getRequest()->getParam('driver_id'))) {
@@ -36,16 +36,16 @@ class Ignovate_Driver_Model_Api2_Order_Rest_Admin_V2
 
         try {
 
-            $driverId = $this->getRequest()->getParam('driver_id');
+            //$driverId = $this->getRequest()->getParam('driver_id');
             //Load Driver info by id
-            $driver = Mage::getModel('ignovate_driver/driver')->load($driverId);
+            //$driver = Mage::getModel('ignovate_driver/driver')->load($driverId);
 
             //Append Driver name in comment
-            $pieces = array (
+           /* $pieces = array (
                 $comment,
                 $driver->getName()
             );
-            $comment = join(" - ", $pieces);
+            $comment = join(" - ", $pieces);*/
             $order->addStatusHistoryComment($comment);
 
             $order->setDriverStatus($params['status']);
@@ -55,11 +55,16 @@ class Ignovate_Driver_Model_Api2_Order_Rest_Admin_V2
                 'order' => $order,
             ));
 
-            $this->_successMessage(
+            return array (
+                'status' => "success",
+                'message' => "Order updated successfully - {$order->getIncrementId()}"
+            );
+
+            /*$this->_successMessage(
                 'Order updated successfully',
                 Mage_Api2_Model_Server::HTTP_OK,
                 $this->_getParams($order)
-            );
+            );*/
         } catch (Exception $e) {
             // Catch any type of exception and convert it into API2 exception
             throw new Mage_Api2_Exception(

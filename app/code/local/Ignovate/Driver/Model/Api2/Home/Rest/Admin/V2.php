@@ -26,7 +26,7 @@ class Ignovate_Driver_Model_Api2_Home_Rest_Admin_V2
 
             $arr = array ();
             if ($collection->getSize() > 0) {
-                
+
                 foreach ($collection as $data) {
 
                     //Get Store Name
