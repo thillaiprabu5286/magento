@@ -37,7 +37,7 @@ class Ignovate_Sales_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_Wid
             and baddress.address_type = 'shipping'",
             array('telephone' => 'baddress.telephone')
         );
-        
+
         //Filter order by associated user stores
         $userId = Mage::getSingleton('admin/session')->getUser()->getUserId();
         $userStores = Mage::getResourceModel('ignovate_adminhtml/userStore')->loadStores($userId);
