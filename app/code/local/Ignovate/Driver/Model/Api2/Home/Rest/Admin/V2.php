@@ -5,29 +5,49 @@ class Ignovate_Driver_Model_Api2_Home_Rest_Admin_V2
 {
     public function _retrieveCollection()
     {
-        $quoteId = $this->getRequest()->getParam('quote_id');
-        if (empty($quoteId)) {
-            Mage::throwException('Quote Id is not specified');
-        }
-
-        $storeId = $this->getRequest()->getParam('store_id');
-        if (empty($storeId)) {
-            Mage::throwException('Store Id is not specified');
-        }
-
-        $response = array();
         try {
-            /** @var Mage_Sales_Model_Quote $quote */
-            $quote = Mage::getModel('sales/quote')
-                ->setStoreId($storeId)
-                ->load($quoteId);
-            $response = $this->_buildQuote($quote);
+
+            $driverId = $this->getRequest()->getParam('id');
+            if (empty($driverId)) {
+                Mage::throwException('Driver id is empty');
+            }
+
+            //Get Sales order collection from Driver id
+            /** @var  $order */
+            $order = Mage::getResourceModel('sales/order_collection');
+            $collection = $order->addFieldToFilter('driver', $driverId);
+
+            $arr = array ();
+            if ($collection->getSize() > 0) {
+                foreach ($collection as $data) {
+
+                    //Get Store Name
+                    $store = Mage::app()->getStore($data->getStoreId())->getName();
+
+                    //Get Phonenumber
+                    $shippingAddress = $data->getShippingAddress();
+                    $phone = $shippingAddress->getTelephone();
+
+                    $arr[] = array (
+                        'id' => $data->getId(),
+                        'order_number' => $data->getIncrementId(),
+                        'store_name' => $store,
+                        'customer_name' => $shippingAddress->getFirstname(),
+                        'phone' => $phone,
+                        'status' => $data->getStatus()
+                    );
+                }
+            }
+
+            return $arr;
 
         } catch (Exception $e) {
-            echo (string)$e->getMessage();
+            // Catch any type of exception and convert it into API2 exception
+            throw new Mage_Api2_Exception(
+                $e->getMessage(),
+                Mage_Api2_Model_Server::HTTP_OK
+            );
         }
-
-        return $response;
     }
 }
 

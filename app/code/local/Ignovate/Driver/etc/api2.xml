@@ -27,25 +27,25 @@
                 </routes>
                 <versions>1</versions>
             </login_api2>
-            <!--<home_api2 translate="title" module="ignovate_driver">-->
-                <!--<group>driver_app</group>-->
-                <!--<title>Home</title>-->
-                <!--<sort_order>1</sort_order>-->
-                <!--<model>ignovate_driver/api2_home</model>-->
-                <!--<privileges>-->
-                    <!--<admin>-->
-                        <!--<retrieve>1</retrieve>-->
-                    <!--</admin>-->
-                <!--</privileges>-->
-                <!--<routes>-->
-                    <!--<get_order_collection>-->
-                        <!--<route>/driver/home/:id</route>-->
-                        <!--<action_type>collection</action_type>-->
-                        <!--<version>2</version>-->
-                    <!--</get_order_collection>-->
-                <!--</routes>-->
-                <!--<versions>1</versions>-->
-            <!--</home_api2>-->
+            <home_api2 translate="title" module="ignovate_driver">
+                <group>driver_app</group>
+                <title>Home</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_driver/api2_home</model>
+                <privileges>
+                    <admin>
+                        <retrieve>1</retrieve>
+                    </admin>
+                </privileges>
+                <routes>
+                    <get_order_collection>
+                        <route>/driver/home/:id</route>
+                        <action_type>collection</action_type>
+                        <version>2</version>
+                    </get_order_collection>
+                </routes>
+                <versions>1</versions>
+            </home_api2>
         </resources>
     </api2>
 </config>
