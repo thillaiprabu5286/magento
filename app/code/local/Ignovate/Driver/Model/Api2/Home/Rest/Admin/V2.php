@@ -15,10 +15,18 @@ class Ignovate_Driver_Model_Api2_Home_Rest_Admin_V2
             //Get Sales order collection from Driver id
             /** @var  $order */
             $order = Mage::getResourceModel('sales/order_collection');
-            $collection = $order->addFieldToFilter('driver', $driverId);
+            $collection = $order->addFieldToFilter(
+                    'driver',
+                    $driverId
+                )
+                ->addFieldToFilter(
+                    'status',
+                    'ready_for_delivery'
+                );
 
             $arr = array ();
             if ($collection->getSize() > 0) {
+                
                 foreach ($collection as $data) {
 
                     //Get Store Name
