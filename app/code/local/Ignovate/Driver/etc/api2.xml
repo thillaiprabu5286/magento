@@ -58,7 +58,7 @@
                 </privileges>
                 <routes>
                     <order_status_update>
-                        <route>/order/status/:id</route>
+                        <route>/driver/:driver_id/order/status/:id</route>
                         <action_type>entity</action_type>
                         <version>2</version>
                     </order_status_update>
