@@ -53,6 +53,16 @@ class Mage_Adminhtml_Block_Sales_Order_View_History extends Mage_Adminhtml_Block
         return $statuses;
     }
 
+    public function getDrivers()
+    {
+        $storeId = $this->getOrder()->getStoreId();
+
+        /** @var Ignovate_Driver_Model_Resource_Driver_Collection $driver */
+        $driver = Mage::getResourceModel('ignovate_driver/driver_collection');
+        $collection = $driver->addFieldToFilter('store_id', $storeId);
+        return $collection->getData();
+    }
+
     public function canSendCommentEmail()
     {
         return Mage::helper('sales')->canSendOrderCommentEmail($this->getOrder()->getStore()->getId());

@@ -281,6 +281,10 @@ class Mage_Adminhtml_Sales_OrderController extends Mage_Adminhtml_Controller_Act
 
                 $comment = trim(strip_tags($data['comment']));
 
+                if ($data['driver']) {
+                    $order->setDriver($data['driver']);
+                }
+
                 $order->save();
                 $order->sendOrderUpdateEmail($notify, $comment);
 

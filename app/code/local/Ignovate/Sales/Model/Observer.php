@@ -15,5 +15,4 @@ class Ignovate_Sales_Model_Observer
 
         return $this;
     }
-
 }
