@@ -21,6 +21,10 @@ class Ignovate_Driver_Model_Api2_Order_Rest_Admin_V2
             $this->_critical(self::RESOURCE_NOT_FOUND);
         }
 
+        if (!isset($params['driver_id'])) {
+            $this->_critical('Driver ID required');
+        }
+
         if (!isset($params['status'])) {
             return $this;
         }
@@ -32,7 +36,11 @@ class Ignovate_Driver_Model_Api2_Order_Rest_Admin_V2
 
         try {
 
-            $order->addStatusHistoryComment($comment);
+            $driver = Mage::getModel('ignovate_driver/driver')->load($params['driver_id']);
+            $driverName = $driver->getName();
+            $pieces = array ($comment, $driverName);
+            $parts = join (" - ", $pieces);
+            $order->addStatusHistoryComment($parts);
 
             $order->setDriverStatus($params['status']);
             $order->save();
