@@ -1303,7 +1303,7 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object implements M
             }
         }
 
-        if (isset($data['billing_address'])) {
+        if (isset($data['billing_address']) && $data['is_app'] == 1) {
             //Add extra fields to street field
             $ext = array (
                 $data['billing_address']['door_no'],
@@ -1317,7 +1317,7 @@ class Mage_Adminhtml_Model_Sales_Order_Create extends Varien_Object implements M
             $this->setBillingAddress($data['billing_address']);
         }
 
-        if (isset($data['shipping_address'])) {
+        if (isset($data['shipping_address']) && $data['is_app'] == 1) {
             //Add extra fields to street field
             $ext = array (
                 $data['shipping_address']['door_no'],

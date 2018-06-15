@@ -126,6 +126,13 @@ class Ignovate_Sales_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_Wid
             'options' => Mage::getSingleton('sales/order_config')->getStatuses(),
         ));
 
+        $this->addColumn('driver_status', array(
+            'header'=> Mage::helper('sales')->__('Driver Status'),
+            'width' => '80px',
+            'type'  => 'text',
+            'index' => 'driver_status',
+        ));
+
         if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
             $this->addColumn('action',
                 array(

@@ -32,5 +32,26 @@
                 </observers>
             </sales_order_save_after>
         </events>
+        <resources>
+            <ignovate_sales_setup>
+                <setup>
+                    <module>Ignovate_Sales</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ignovate_sales_setup>
+            <ignovate_sales_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </ignovate_sales_read>
+            <ignovate_sales_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </ignovate_sales_write>
+        </resources>
     </global>
 </config>

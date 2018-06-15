@@ -31,6 +31,7 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     public function createOrder($orderData)
     {
+        $debug = true;
         if (!empty($orderData)) {
 
             $this->_initSession($orderData['session']);
@@ -47,6 +48,15 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                     ->createOrder();
 
                 $this->_getSession()->clear();
+
+                //Save Order again with is app flag
+                $order->setIsApp($orderData['order']['is_app'])
+                    ->save();
+
+                //Delete Quote
+                //$quote = Mage::getModel("sales/quote")->load($orderData['quote_id']);
+                //$quote->setIsActive(false);
+                //$quote->delete();
 
                 $params = array ('id' => $order->getIncrementId());
                 $this->_successMessage(

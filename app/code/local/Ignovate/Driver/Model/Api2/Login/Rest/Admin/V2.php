@@ -29,7 +29,7 @@ class Ignovate_Driver_Model_Api2_Login_Rest_Admin_V2
                 ->getFirstItem();
             if (is_object($data) && $data->getId()) {
                 return array (
-                    'response' => 'success',
+                    'status' => 'success',
                     'data' => array (
                         'id' => $data->getId(),
                         'name' => $data->getName(),
@@ -37,7 +37,7 @@ class Ignovate_Driver_Model_Api2_Login_Rest_Admin_V2
                 );
             } else {
                 return array (
-                    'response' => 'error',
+                    'status' => 'error',
                     'data' => array ()
                 );
             }

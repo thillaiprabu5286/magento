@@ -5,14 +5,14 @@ $this->startSetup();
 
 $this->getConnection()->addColumn(
     $this->getTable('sales/order'),
-    'is_app',
-    'INT(10)'
+    'driver_status',
+    'VARCHAR(255)'
 );
 
 $this->getConnection()->addColumn(
     $this->getTable('sales/order_grid'),
-    'is_app',
-    'INT(10)'
+    'driver_status',
+    'VARCHAR(255)'
 );
 
 $this->endSetup();

@@ -46,6 +46,25 @@
                 </routes>
                 <versions>1</versions>
             </home_api2>
+            <order_status_api2 translate="title" module="ignovate_driver">
+                <group>driver_app</group>
+                <title>Order Status</title>
+                <sort_order>1</sort_order>
+                <model>ignovate_driver/api2_order</model>
+                <privileges>
+                    <admin>
+                        <update>1</update>
+                    </admin>
+                </privileges>
+                <routes>
+                    <order_status_update>
+                        <route>/order/status/:id</route>
+                        <action_type>entity</action_type>
+                        <version>2</version>
+                    </order_status_update>
+                </routes>
+                <versions>1</versions>
+            </order_status_api2>
         </resources>
     </api2>
 </config>
