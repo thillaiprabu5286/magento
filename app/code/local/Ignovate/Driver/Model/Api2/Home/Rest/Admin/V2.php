@@ -21,7 +21,7 @@ class Ignovate_Driver_Model_Api2_Home_Rest_Admin_V2
                 )
                 ->addFieldToFilter(
                     'status',
-                    'ready_for_delivery'
+                    'driver_assigned'
                 );
 
             $arr = array ();
