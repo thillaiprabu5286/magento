@@ -51,11 +51,11 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Edit_Form extends Mage_Adminhtml_Bl
             'name'      => 'aadhaar_id',
             'label'     => $helper->__('Aadhaar ID'),
             'title'     => $helper->__('Aadhaar ID'),
-            'class' => 'validate-number validate-length maximum-length-12'
+            'class' => 'validate-alphanum validate-length maximum-length-12'
         ));
         $fieldset->addField('file_aadhaar', 'file', array(
             'label'     => $helper->__('Attachment'),
-            'required'  => false,
+            'required'  => true,
             'name'      => 'file_aadhaar'
         ));
 
@@ -63,11 +63,12 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Edit_Form extends Mage_Adminhtml_Bl
             'name'      => 'pan_number',
             'label'     => $helper->__('Pan No'),
             'title'     => $helper->__('Pan No'),
-            'class'     => 'validate-alphanum'
+            'class'     => 'validate-alphanum validate-length maximum-length-15',
+            'required'  => true
         ));
         $fieldset->addField('file_pan', 'file', array(
             'label'     => $helper->__('Attachment'),
-            'required'  => false,
+            'required'  => true,
             'name'      => 'file_pan'
         ));
 
@@ -75,12 +76,12 @@ class Ignovate_Driver_Block_Adminhtml_Driver_Edit_Form extends Mage_Adminhtml_Bl
             'name'      => 'driving_license',
             'label'     => $helper->__('Driving License'),
             'title'     => $helper->__('Driving License'),
-            'class'     => 'validate-alphanum',
+            'class'     => 'validate-alphanum validate-length maximum-length-15',
             'required'  => true
         ));
         $fieldset->addField('file_license', 'file', array(
             'label'     => $helper->__('Attachment'),
-            'required'  => false,
+            'required'  => true,
             'name'      => 'file_license'
         ));
 
