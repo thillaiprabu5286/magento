@@ -21,7 +21,9 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
             Mage::throwException('Consumer key is incorrect');
         }
 
-        $this->createOrder($request);
+        $response = $this->createOrder($request);
+
+        return $response;
     }
 
     /**
@@ -60,18 +62,20 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
                     $quote->delete();
                 }
 
-                $params = array ('id' => $order->getIncrementId());
-                $this->_successMessage(
-                    'Order Created Successfully',
-                    Mage_Api2_Model_Server::HTTP_OK,
-                    $params
+                $response = array (
+                    'status' => "success",
+                    'message' => "Order {$order->getIncrementId()} Created Successfully"
                 );
+
             } catch (Exception $e){
-                $this->_critical(
-                    Ignovate_Api2_Model_Resource::RESOURCE_REQUEST_DATA_INVALID,
-                    Mage_Api2_Model_Server::HTTP_NOT_FOUND
+
+                $response = array (
+                    'status' => "error",
+                    'message' => (string)$e->getMessage()
                 );
             }
+
+            return $response;
         }
     }
 
