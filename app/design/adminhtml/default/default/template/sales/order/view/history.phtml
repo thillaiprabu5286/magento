@@ -39,15 +39,15 @@
 
         <?php $status = $this->getOrder()->getStatus() ?>
         <?php if ($status == 'ready_for_delivery'): ?>
-        <span class="field-row">
-            <label class="normal" for="history_status"><?php echo Mage::helper('sales')->__('Driver') ?></label><br/>
-            <select name="history[driver]" class="select" id="history_driver">
-                <option value="">-- Please Select --</option>
-            <?php foreach ($this->getDrivers() as $key => $data): ?>
-                <option value="<?php echo $data['id'] ?>"<?php if($data['id'] == $this->getOrder()->getDriver()): ?> selected="selected"<?php endif; ?>><?php echo $data['name'] ?></option>
-            <?php endforeach; ?>
-            </select>
-        </span>
+            <span class="field-row">
+                <label class="normal" for="history_status"><?php echo Mage::helper('sales')->__('Driver') ?></label><br/>
+                <select name="history[driver]" class="select" id="history_driver">
+                    <option value="">-- Please Select --</option>
+                <?php foreach ($this->getDrivers() as $key => $data): ?>
+                    <option value="<?php echo $data['id'] ?>"<?php if($data['id'] == $this->getOrder()->getDriver()): ?> selected="selected"<?php endif; ?>><?php echo $data['name'] ?></option>
+                <?php endforeach; ?>
+                </select>
+            </span>
         <?php endif; ?>
         <span class="field-row">
             <label class="normal" for="history_comment"><?php echo Mage::helper('sales')->__('Comment') ?></label>

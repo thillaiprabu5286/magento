@@ -57,9 +57,14 @@ class Mage_Adminhtml_Block_Sales_Order_View_History extends Mage_Adminhtml_Block
     {
         $storeId = $this->getOrder()->getStoreId();
 
-        /** @var Ignovate_Driver_Model_Resource_Driver_Collection $driver */
-        $driver = Mage::getResourceModel('ignovate_driver/driver_collection');
-        $collection = $driver->addFieldToFilter('store_id', $storeId);
+        /** @var Ignovate_Driver_Model_Resource_Driver_Collection $collection */
+        $collection = Mage::getResourceModel('ignovate_driver/driver_collection')
+            ->addFieldToFilter(
+                'store_id', $storeId
+            )->addFieldToFilter(
+                'status', 1
+            );
+
         return $collection->getData();
     }
 
