@@ -18,10 +18,10 @@ class Ignovate_Sales_Model_Observer
 
     public function onSaveDriverChangeStatus($observer)
     {
-        $debug = true;
         $order = $observer->getEvent()->getOrder();
         if($order->getStatus() == 'ready_for_delivery') {
-            if (!empty($order->getDriver()) && $order->getDriver() != '') {
+            $driver = $order->getDriver();
+            if (isset($driver)) {
                 //Modify order status
                 $order->setDriverStatus('driver_assigned');
             }
