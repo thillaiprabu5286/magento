@@ -42,7 +42,8 @@ class Ignovate_Driver_Model_Api2_Home_Rest_Admin_V2
                         'store_name' => $store,
                         'customer_name' => $shippingAddress->getFirstname(),
                         'phone' => $phone,
-                        'status' => $data->getStatus()
+                        'status' => $data->getStatus(),
+                        'driver_status' => $data->getDriverStatus()
                     );
                 }
             }
