@@ -283,7 +283,7 @@ class Mage_Adminhtml_Sales_OrderController extends Mage_Adminhtml_Controller_Act
 
                 if ($data['driver']) {
                     $order->setDriver($data['driver'])
-                        ->setDriverStatus('Driver Assigned');
+                        ->setStatus('driver_assigned');
                 }
 
                 $order->save();
