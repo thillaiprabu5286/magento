@@ -33,6 +33,10 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
      */
     public function createOrder($orderData)
     {
+        Mage::log('New Order Request Starts ----', null, 'order.log');
+        Mage::log($orderData, null, 'order.log');
+        Mage::log('New Order Request Ends ----', null, 'order.log');
+
         $debug = true;
         if (!empty($orderData)) {
 
@@ -53,6 +57,11 @@ class Ignovate_Mobile_Model_Api2_Order_Rest_Admin_V2
 
                 //Save Order again with is app flag
                 $order->setIsApp($orderData['order']['is_app'])->save();
+
+                //Send Order sms
+                /** @var Ignovate_Sms_Helper_Data $helper */
+                $helper = Mage::helper('ignovate_sms');
+                $helper->sendSms($order, 'NewOrderNew');
 
                 //Delete Quote
                 if ($order->getIncrementId()) {
