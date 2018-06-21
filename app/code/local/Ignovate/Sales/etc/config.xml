@@ -29,11 +29,6 @@
                         <class>ignovate_sales_model_observer</class>
                         <method>triggerCompleteSms</method>
                     </sales_order_complete_send_sms>
-                    <sales_order_modify_status>
-                        <type>singleton</type>
-                        <class>ignovate_sales_model_observer</class>
-                        <method>onSaveDriverChangeStatus</method>
-                    </sales_order_modify_status>
                 </observers>
             </sales_order_save_after>
         </events>
