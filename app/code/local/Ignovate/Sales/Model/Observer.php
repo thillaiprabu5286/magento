@@ -7,11 +7,10 @@ class Ignovate_Sales_Model_Observer
     {
         $order = $observer->getEvent()->getOrder();
 
-        if ($order->getStatus() == Mage_Sales_Model_Order::STATE_COMPLETE) {
+        if ($order->getState() != 'new') {
             /** @var Ignovate_Sms_Helper_Fcm $helper */
             $helper = Mage::helper('ignovate_sms/fcm');
             $helper->sendSms($order);
-
         }
 
         return $this;

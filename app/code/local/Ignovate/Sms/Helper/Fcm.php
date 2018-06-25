@@ -26,7 +26,7 @@ class Ignovate_Sms_Helper_Fcm extends Mage_Core_Helper_Abstract
         $fcmId = $customer->getFcmId();
 
         // prep the bundle
-        $message = "Dear Customer, Your order {$order->getIncrementId()} was delivered! Thanks for using Veggies8to8!!";
+        $message = "Dear Customer, The status of your Veggies8to8 Order {$order->getIncrementId()} is {$order->getStatusLabel()}";
         $msg = array (
             'body' 	=> $message,
             'title'		=> 'Veggies8to8 Order Delivery',
